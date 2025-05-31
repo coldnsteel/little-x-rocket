@@ -5,7 +5,7 @@ const CACHE_NAME = 'little-x-rocket-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/manifest.json'
+ // '/manifest.json'
 ];
 
 // Install event - cache resources
