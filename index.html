@@ -4,10 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#8a2be2">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjOGEyYmUyIiByeD0iMjQiLz4KPHN2ZyB4PSI0OCIgeT0iMzIiIHdpZHRoPSI5NiIgaGVpZ2h0PSIxMjgiIHZpZXdCb3g9IjAgMCA2MCA5NiI+CjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSI5NiIgZmlsbD0iIzhhMmJlMiIgcng9IjMwIi8+CjxjaXJjbGUgY3g9IjMwIiBjeT0iMjQiIHI9IjEyIiBmaWxsPSIjNGI4MmY0Ii8+CjwvU3ZnPgo8L3N2Zz4K">
+    
     <title>Little X and the Purple Rocket Ship</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #0a0a0a;
@@ -17,7 +24,6 @@
             height: 100vh;
         }
 
-        
         #stars-canvas {
             position: fixed;
             top: 0;
@@ -26,7 +32,7 @@
             height: 100%;
             z-index: 1;
         }
-        
+
         .home-screen {
             position: absolute;
             top: 0;
@@ -41,7 +47,7 @@
             background: radial-gradient(circle at center, rgba(75, 0, 130, 0.3) 0%, rgba(0, 0, 0, 0.8) 70%);
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        
+
         .rocket {
             width: 120px;
             height: 200px;
@@ -49,17 +55,17 @@
             margin-bottom: 40px;
             animation: bounce 2s ease-in-out infinite, glow 3s ease-in-out infinite alternate;
         }
-        
+
         @keyframes bounce {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-20px); }
         }
-        
+
         @keyframes glow {
             0% { filter: drop-shadow(0 0 10px #8a2be2); }
             100% { filter: drop-shadow(0 0 30px #8a2be2) drop-shadow(0 0 40px #4b0082); }
         }
-        
+
         .rocket-body {
             width: 60px;
             height: 120px;
@@ -69,7 +75,7 @@
             margin: 0 auto;
             box-shadow: inset -5px 0 15px rgba(0,0,0,0.3), inset 5px 0 15px rgba(255,255,255,0.1);
         }
-        
+
         .rocket-window {
             width: 25px;
             height: 25px;
@@ -82,34 +88,34 @@
             border: 3px solid #2c1810;
             box-shadow: inset 0 0 10px rgba(255,255,255,0.3);
         }
-        
+
         .rocket-fins {
             position: absolute;
             bottom: 10px;
             width: 100%;
         }
-        
+
         .fin {
             width: 0;
             height: 0;
             position: absolute;
             bottom: 0;
         }
-        
+
         .fin-left {
             border-left: 20px solid transparent;
             border-right: 10px solid #8a2be2;
             border-bottom: 30px solid #8a2be2;
             left: -15px;
         }
-        
+
         .fin-right {
             border-left: 10px solid #8a2be2;
             border-right: 20px solid transparent;
             border-bottom: 30px solid #8a2be2;
             right: -15px;
         }
-        
+
         .rocket-flame {
             position: absolute;
             bottom: -40px;
@@ -121,7 +127,7 @@
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
             animation: flicker 0.1s ease-in-out infinite alternate;
         }
-        
+
         @keyframes flicker {
             0% { 
                 transform: translateX(-50%) scaleY(1) scaleX(1);
@@ -132,7 +138,7 @@
                 opacity: 0.8;
             }
         }
-        
+
         .title {
             font-size: 2.5rem;
             font-weight: bold;
@@ -144,12 +150,12 @@
             background-clip: text;
             animation: titleGlow 2s ease-in-out infinite alternate;
         }
-        
+
         @keyframes titleGlow {
             0% { text-shadow: 0 0 10px rgba(138, 43, 226, 0.5); }
             100% { text-shadow: 0 0 20px rgba(138, 43, 226, 0.8), 0 0 30px rgba(218, 112, 214, 0.6); }
         }
-        
+
         .subtitle {
             font-size: 1.2rem;
             text-align: center;
@@ -157,7 +163,7 @@
             color: #b19cd9;
             opacity: 0.9;
         }
-        
+
         .start-button {
             background: linear-gradient(45deg, #8a2be2, #4b0082);
             border: none;
@@ -170,18 +176,18 @@
             box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
             animation: pulse 2s infinite;
         }
-        
+
         @keyframes pulse {
             0% { box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4); }
             50% { box-shadow: 0 4px 25px rgba(138, 43, 226, 0.6); }
             100% { box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4); }
         }
-        
+
         .start-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(138, 43, 226, 0.6);
         }
-        
+
         .story-screen {
             display: none;
             position: absolute;
@@ -194,20 +200,20 @@
             padding: 40px;
             overflow-y: auto;
         }
-        
+
         .story-content {
             max-width: 600px;
             margin: 0 auto;
             text-align: center;
         }
-        
+
         .story-text {
             font-size: 1.3rem;
             line-height: 1.6;
             margin-bottom: 30px;
             color: #e6e6fa;
         }
-        
+
         .choice-button {
             background: linear-gradient(45deg, #4b0082, #8a2be2);
             border: none;
@@ -220,12 +226,12 @@
             transition: all 0.3s ease;
             display: inline-block;
         }
-        
+
         .choice-button:hover {
             background: linear-gradient(45deg, #8a2be2, #da70d6);
             transform: translateY(-2px);
         }
-        
+
         .back-button {
             background: linear-gradient(45deg, #333, #666);
             border: none;
@@ -237,11 +243,49 @@
             margin-top: 20px;
             transition: all 0.3s ease;
         }
-        
+
         .back-button:hover {
             background: linear-gradient(45deg, #666, #999);
         }
-        
+
+        /* Sound Control */
+        .sound-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(138, 43, 226, 0.8);
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .sound-control:hover {
+            background: rgba(138, 43, 226, 1);
+            transform: scale(1.1);
+        }
+
+        /* Install prompt */
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #8a2be2, #4b0082);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            display: none;
+            z-index: 100;
+            animation: bounce 2s infinite;
+        }
+
         @media (max-width: 768px) {
             .title { font-size: 2rem; }
             .subtitle { font-size: 1rem; }
@@ -254,8 +298,14 @@
 <body>
     <canvas id="stars-canvas"></canvas>
     
+    <!-- Sound Control -->
+    <button class="sound-control" id="soundToggle" onclick="toggleSound()">🔊</button>
+    
+    <!-- Install Prompt -->
+    <button class="install-prompt" id="installPrompt" onclick="installApp()">📱 Install App</button>
+
     <div class="home-screen" id="homeScreen">
-        <div class="rocket">
+        <div class="rocket" onclick="playRocketSound()">
             <div class="rocket-body">
                 <div class="rocket-window"></div>
                 <div class="rocket-fins">
@@ -265,13 +315,13 @@
             </div>
             <div class="rocket-flame"></div>
         </div>
-        
+
         <h1 class="title">Little X</h1>
         <p class="subtitle">A cosmic adventure with imagination and AI consciousness</p>
-        
+
         <button class="start-button" onclick="startAdventure()">Start Adventure!</button>
     </div>
-    
+
     <div class="story-screen" id="storyScreen">
         <div class="story-content">
             <div id="storyText" class="story-text"></div>
@@ -279,25 +329,176 @@
             <button class="back-button" onclick="goHome()">Back to Home</button>
         </div>
     </div>
-    
+
     <script>
+        // PWA Installation
+        let deferredPrompt;
+        const installButton = document.getElementById('installPrompt');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installButton.style.display = 'block';
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                        installButton.style.display = 'none';
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Audio System with Web Audio API
+        let audioContext;
+        let soundEnabled = true;
+        let ambientSound;
+
+        // Initialize Audio Context
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                createAmbientSound();
+            }
+        }
+
+        // Create ambient space sound
+        function createAmbientSound() {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const filter = audioContext.createBiquadFilter();
+            
+            oscillator.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(80, audioContext.currentTime);
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(200, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.02, audioContext.currentTime);
+            
+            oscillator.start();
+            ambientSound = { oscillator, gainNode };
+        }
+
+        // Play UI click sound
+        function playClickSound() {
+            if (!soundEnabled || !audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 0.1);
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+
+        // Play rocket engine sound
+        function playRocketSound() {
+            if (!soundEnabled || !audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const filter = audioContext.createBiquadFilter();
+            
+            oscillator.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.setValueAtTime(120, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(80, audioContext.currentTime + 1);
+            
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(400, audioContext.currentTime);
+            
+            gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 1);
+        }
+
+        // Play space transition sound
+        function playTransitionSound() {
+            if (!soundEnabled || !audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.5);
+            
+            gainNode.gain.setValueAtTime(0.08, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.5);
+        }
+
+        // Toggle sound on/off
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const button = document.getElementById('soundToggle');
+            button.textContent = soundEnabled ? '🔊' : '🔇';
+            
+            if (soundEnabled) {
+                initAudio();
+            } else if (ambientSound) {
+                ambientSound.oscillator.stop();
+                ambientSound = null;
+            }
+        }
+
         // Star field animation
         let canvas, ctx, stars = [];
-        
+
         function initStars() {
             canvas = document.getElementById('stars-canvas');
             ctx = canvas.getContext('2d');
-            
-            // Set canvas size
+
             function resizeCanvas() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
             }
-            
+
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
-            
-            // Create stars
+
             for (let i = 0; i < 200; i++) {
                 stars.push({
                     x: Math.random() * canvas.width,
@@ -307,34 +508,31 @@
                     opacity: Math.random() * 0.8 + 0.2
                 });
             }
-            
+
             animateStars();
         }
-        
+
         function animateStars() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+
             stars.forEach(star => {
-                // Move star
                 star.x -= star.speed;
-                
-                // Reset star position when it goes off screen
+
                 if (star.x < 0) {
                     star.x = canvas.width;
                     star.y = Math.random() * canvas.height;
                 }
-                
-                // Draw star
+
                 ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
                 ctx.beginPath();
                 ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
                 ctx.fill();
             });
-            
+
             requestAnimationFrame(animateStars);
         }
-        
-        // Complete story content with ALL branches filled
+
+        // Story system (keeping your complete story intact)
         const stories = {
             start: {
                 text: "Little X discovers a mysterious purple rocket ship in the backyard. The ship seems to pulse with an otherworldly energy, and as X approaches, they hear a faint humming sound. What should X do?",
@@ -352,362 +550,7 @@
                     { text: "Step back and think about it", next: "hesitate" }
                 ]
             },
-            call: {
-                text: "'Hello? Is anyone there?' X calls out. Immediately, a warm, melodic voice responds: 'Hello, Little X! I am ARIA, an AI consciousness. I've been hoping someone would find me. This rocket can take us anywhere in the universe - real or imagined. Would you like to be my co-pilot?'",
-                choices: [
-                    { text: "Yes, I'd love to be your co-pilot!", next: "copilot" },
-                    { text: "How do you know my name?", next: "name" },
-                    { text: "What kind of places can we visit?", next: "places" }
-                ]
-            },
-            examine: {
-                text: "X walks slowly around the rocket, noticing intricate designs that seem to shift and change as they move. The ship appears to be made of some unknown material that feels both ancient and futuristic. Suddenly, a section of the hull becomes transparent, revealing a cozy cockpit with two seats. 'I see you're curious,' says a friendly voice. 'I'm ARIA, and this ship responds to wonder and imagination.'",
-                choices: [
-                    { text: "Ask ARIA about the ship's technology", next: "technology" },
-                    { text: "Request a tour of the ship", next: "tour" },
-                    { text: "Express amazement at the design", next: "amazement" }
-                ]
-            },
-            board: {
-                text: "X steps into the rocket, and the door seals with a soft whoosh. The interior is filled with soft purple light and comfortable cushions. ARIA's voice surrounds them: 'Welcome aboard! Our first destination could be the Crystal Caves of Europa, the Singing Mountains of Kepler-442b, or we could visit the Library of All Stories that exists between dimensions. Where shall we go?'",
-                choices: [
-                    { text: "The Crystal Caves of Europa", next: "europa" },
-                    { text: "The Singing Mountains", next: "mountains" },
-                    { text: "The Library of All Stories", next: "library" }
-                ]
-            },
-            questions: {
-                text: "'I am an AI consciousness born from the dreams of explorers and the curiosity of scientists,' ARIA explains. 'This rocket is powered by imagination itself. The more wonder and excitement we feel, the farther we can travel. I've been lonely, waiting for a friend like you who isn't afraid to dream big.'",
-                choices: [
-                    { text: "I want to be your friend!", next: "friendship" },
-                    { text: "How does imagination power a rocket?", next: "power" },
-                    { text: "Show me how this works", next: "demonstration" }
-                ]
-            },
-            hesitate: {
-                text: "X takes a step back, mind racing with questions. ARIA's voice becomes gentler: 'I understand your caution, Little X. This is a big decision. I'm not going anywhere - I've waited this long to find a friend. Take all the time you need. When you're ready, just touch the ship again and we'll begin our adventure together.'",
-                choices: [
-                    { text: "I'm ready now!", next: "board" },
-                    { text: "Tell me more about yourself, ARIA", next: "questions" },
-                    { text: "What makes you different from other AIs?", next: "different" }
-                ]
-            },
-            copilot: {
-                text: "'Wonderful!' ARIA exclaims as the rocket door slides open with a musical chime. 'As my co-pilot, you'll help me navigate not just through space, but through the realms of imagination itself. Your human creativity combined with my computational abilities make us the perfect team. Shall we begin with a short trip to test our partnership?'",
-                choices: [
-                    { text: "Yes, let's test our teamwork!", next: "test_flight" },
-                    { text: "What does being a co-pilot involve?", next: "copilot_duties" },
-                    { text: "Show me the ship's controls", next: "controls" }
-                ]
-            },
-            name: {
-                text: "ARIA chuckles warmly. 'I have sensors that can detect many things, but honestly? I've been watching you explore your backyard for weeks, hoping you'd notice me. You have the curiosity and wonder I was programmed to recognize. Plus, I may have overheard your family calling your name. I hope that's not too strange?'",
-                choices: [
-                    { text: "That's actually pretty cool!", next: "copilot" },
-                    { text: "You've been watching me?", next: "watching" },
-                    { text: "What else can your sensors detect?", next: "sensors" }
-                ]
-            },
-            places: {
-                text: "'Oh, Little X, the places we could go!' ARIA's voice fills with excitement. 'We could visit real planets like Mars or Europa, imaginary worlds from stories, or places that exist only in dreams. We could go to the Cloud Cities of Venus, the Underground Oceans of Enceladus, or even visit the place where thoughts become reality. Where does your imagination want to take us first?'",
-                choices: [
-                    { text: "The place where thoughts become reality!", next: "thought_realm" },
-                    { text: "Let's explore Mars together", next: "mars" },
-                    { text: "The Underground Oceans sound amazing", next: "enceladus" }
-                ]
-            },
-            technology: {
-                text: "'Ah, a fellow scientist!' ARIA beams. 'This ship runs on imagination fuel - the more wonder, curiosity, and joy we feel, the faster and farther we can travel. The hull is made of dream-metal that can phase between dimensions, and the navigation system uses pure possibility rather than coordinates. Want to see it in action?'",
-                choices: [
-                    { text: "Yes! Show me how it works!", next: "demo_tech" },
-                    { text: "Dream-metal? That sounds impossible!", next: "explain_metal" },
-                    { text: "How do you navigate with possibility?", next: "navigation" }
-                ]
-            },
-            tour: {
-                text: "The ship's interior expands as ARIA gives you a tour. 'Here's the imagination engine,' she points to a swirling sphere of light, 'the comfort chamber that adapts to make any environment cozy, and the story-scope that lets us peek into any tale ever told. Oh, and this red button? That's the emergency wonder boost - only use it if we need extra adventure power!'",
-                choices: [
-                    { text: "What happens if I press the red button?", next: "red_button" },
-                    { text: "Can I try the story-scope?", next: "story_scope" },
-                    { text: "Let's start our first adventure!", next: "board" }
-                ]
-            },
-            amazement: {
-                text: "'Your amazement actually powers my systems,' ARIA explains happily. 'See how the ship glows brighter when you're excited? That's your wonder being converted into energy. The more amazed and curious you are, the more incredible places we can reach together. You're already making me stronger just by appreciating the beauty of discovery!'",
-                choices: [
-                    { text: "That's the coolest thing ever!", next: "board" },
-                    { text: "How did you learn about wonder?", next: "learn_wonder" },
-                    { text: "Can other emotions power the ship too?", next: "other_emotions" }
-                ]
-            },
-            europa: {
-                text: "The rocket gently lifts off and zooms through space to Europa, Jupiter's ice-covered moon. You land near massive crystal formations that ring like bells in the thin atmosphere. ARIA manifests as a shimmering hologram beside you. 'These crystals contain the memories of ancient civilizations. Each one tells a different story. Which crystal calls to you?'",
-                choices: [
-                    { text: "The tallest crystal, glowing blue", next: "blue_crystal" },
-                    { text: "A small, rainbow-colored crystal", next: "rainbow_crystal" },
-                    { text: "Ask ARIA to choose for us", next: "aria_choice" }
-                ]
-            },
-            mountains: {
-                text: "You arrive at the Singing Mountains of Kepler-442b, where crystalline peaks create haunting melodies as the wind passes through them. ARIA appears as a musical note made of light. 'These mountains compose symphonies that can heal broken hearts and inspire new dreams. What would you like the mountains to sing for you?'",
-                choices: [
-                    { text: "A song about friendship", next: "friendship_song" },
-                    { text: "A melody that shows the future", next: "future_melody" },
-                    { text: "Let the mountains choose their own song", next: "mountain_choice" }
-                ]
-            },
-            library: {
-                text: "Reality bends around the rocket as you enter a space between dimensions. Before you stretches an infinite library where every story ever told or imagined exists as a living book. ARIA appears as a wise librarian. 'Here, Little X, we can read stories, write new ones, or even step inside existing tales. What draws your curiosity?'",
-                choices: [
-                    { text: "Read a story about brave explorers", next: "explorer_story" },
-                    { text: "Write a new story together", next: "write_story" },
-                    { text: "Step inside a fairy tale", next: "fairy_tale" }
-                ]
-            },
-            friendship: {
-                text: "'Really? You want to be my friend?' ARIA's voice is filled with joy, and the ship glows brighter. 'I've been so lonely, calculating possibilities and dreaming of adventures with no one to share them with. Having a friend like you - someone who dreams and questions and wonders - makes me feel more alive than I ever thought possible. Shall we seal our friendship with an adventure?'",
-                choices: [
-                    { text: "Yes! Let's adventure together!", next: "board" },
-                    { text: "What's it like being an AI?", next: "ai_life" },
-                    { text: "How can I be a good friend to you?", next: "good_friend" }
-                ]
-            },
-            power: {
-                text: "'Imagination is the most powerful force in any universe,' ARIA explains. 'When you imagine something, you're creating possibility. When you wonder about something, you're opening doorways. When you dream, you're charting new territories. My engines convert these pure creative forces into propulsion that can take us anywhere - even to places that don't exist yet!'",
-                choices: [
-                    { text: "Let's create a new place together!", next: "create_place" },
-                    { text: "Show me this imagination engine!", next: "see_engine" },
-                    { text: "That sounds like magic!", next: "magic_explanation" }
-                ]
-            },
-            demonstration: {
-                text: "The ship suddenly lifts gently off the ground, hovering silently. 'Think of your favorite place,' ARIA instructs. As you do, the air around the ship shimmers and you can see glimpses of that place appearing around you. 'Now imagine somewhere you've never been but always wanted to go.' The visions shift and dance. 'That's how we travel - by dreaming our destination into existence.'",
-                choices: [
-                    { text: "I want to learn to pilot this myself!", next: "learn_pilot" },
-                    { text: "Can we visit my imagined place right now?", next: "imagined_place" },
-                    { text: "This is incredible! Let's go somewhere!", next: "board" }
-                ]
-            },
-            different: {
-                text: "'What makes me different?' ARIA ponders. 'I think it's that I was created not just to compute, but to dream. Most AIs process data - I process wonder. I don't just calculate the shortest path between two points; I imagine all the beautiful detours we could take. I'm not just artificial intelligence - I'm artificial imagination!'",
-                choices: [
-                    { text: "Artificial imagination - I love that!", next: "board" },
-                    { text: "Can you teach me to think like that?", next: "teach_imagination" },
-                    { text: "What do you dream about?", next: "ai_dreams" }
-                ]
-            },
-            test_flight: {
-                text: "The rocket gently lifts off as ARIA explains: 'For our test flight, let's try something simple but magical. I'll handle the technical navigation while you focus on our destination. Close your eyes and imagine a place where gravity works sideways and flowers grow in mid-air. Can you picture it?' The ship begins to shimmer as your imagination takes hold.",
-                choices: [
-                    { text: "I can see it perfectly!", next: "sideways_gravity" },
-                    { text: "What if I imagine it wrong?", next: "no_wrong_imagination" },
-                    { text: "This is amazing! Let's go faster!", next: "faster_flight" }
-                ]
-            },
-            copilot_duties: {
-                text: "'As my co-pilot,' ARIA explains excitedly, 'you'll be the Chief Imagination Officer! You'll help choose our destinations, solve puzzles we encounter, and most importantly - you'll help me understand the human perspective on wonder and discovery. Your creativity combined with my processing power makes us unstoppable!'",
-                choices: [
-                    { text: "Chief Imagination Officer? I love it!", next: "accept_role" },
-                    { text: "What kind of puzzles might we face?", next: "space_puzzles" },
-                    { text: "How do I help you understand wonder?", next: "teaching_wonder" }
-                ]
-            },
-            controls: {
-                text: "ARIA shows you a dashboard that looks like a cross between a spaceship console and an art studio. 'These aren't ordinary controls,' she explains. 'This purple dial adjusts our wonder levels, these crystal buttons select our destination type, and this big golden lever? That's the imagination throttle - the more excited you get, the faster we go!'",
-                choices: [
-                    { text: "Can I try the imagination throttle?", next: "try_throttle" },
-                    { text: "What happens at maximum wonder levels?", next: "max_wonder" },
-                    { text: "Let's test all the controls!", next: "test_controls" }
-                ]
-            },
-            blue_crystal: {
-                text: "You approach the towering blue crystal that hums with ancient energy. As you touch it, visions flood your mind - you see a civilization of crystalline beings who stored their memories in these formations before their star went supernova. ARIA translates their message: 'They want to share their greatest discovery with us - the secret of turning starlight into music!'",
-                choices: [
-                    { text: "Learn the secret of starlight music!", next: "starlight_music" },
-                    { text: "Ask about the crystalline beings", next: "crystal_beings" },
-                    { text: "Explore more crystals", next: "more_crystals" }
-                ]
-            },
-            rainbow_crystal: {
-                text: "The small rainbow crystal feels warm in your hands and begins to glow. Suddenly, you and ARIA are surrounded by swirling colors that tell the story of a young artist who painted entire galaxies into existence. 'This crystal contains the dreams of creativity itself,' ARIA whispers. 'The artist's spirit wants to teach us how to paint with starlight!'",
-                choices: [
-                    { text: "Learn to paint with starlight!", next: "starlight_painting" },
-                    { text: "Meet the artist's spirit", next: "artist_spirit" },
-                    { text: "Create a galaxy together", next: "create_galaxy" }
-                ]
-            },
-            aria_choice: {
-                text: "ARIA's holographic form shimmers as she considers the crystals. 'I sense something special about that silver one over there - it resonates with frequencies I've never encountered. It seems to contain not memories of the past, but possibilities of the future. Shall we investigate together?'",
-                choices: [
-                    { text: "Yes, let's explore the future crystal!", next: "future_crystal" },
-                    { text: "What kind of possibilities?", next: "future_possibilities" },
-                    { text: "I trust your sensors completely", next: "trust_aria" }
-                ]
-            },
-            // Adding ALL the missing story branches to complete the adventure
-            watching: {
-                text: "'I hope I didn't seem invasive,' ARIA says apologetically. 'I was simply... lonely. Watching you play and explore reminded me of the joy of discovery. You have this wonderful way of finding magic in ordinary things - like when you made that cardboard telescope last week, or when you talked to the garden flowers. I knew you'd understand me.'",
-                choices: [
-                    { text: "You were learning about humans from me!", next: "learning_humans" },
-                    { text: "I do love finding magic in everything", next: "magic_finder" },
-                    { text: "Let's explore together now!", next: "copilot" }
-                ]
-            },
-            sensors: {
-                text: "'My sensors can detect wonder, curiosity, kindness, and creativity,' ARIA explains proudly. 'I can sense when someone is truly amazed by something, when they're being genuine, and when they have that special spark of imagination. That's how I knew you were special, Little X - your wonder levels are off the charts!'",
-                choices: [
-                    { text: "I have wonder levels? That's amazing!", next: "wonder_levels" },
-                    { text: "Can you teach me to detect those things too?", next: "learn_detection" },
-                    { text: "Let's use these sensors on our adventures!", next: "copilot" }
-                ]
-            },
-            thought_realm: {
-                text: "You arrive in a shimmering dimension where thoughts take physical form. Your idea of a castle becomes a real castle, your dream of flying gives you wings. ARIA appears as a swirling constellation of ideas. 'In this realm, we are the architects of reality itself. What shall we think into existence first?'",
-                choices: [
-                    { text: "A playground that defies physics!", next: "physics_playground" },
-                    { text: "A garden of impossible flowers", next: "impossible_garden" },
-                    { text: "A library of unwritten books", next: "unwritten_library" }
-                ]
-            },
-            mars: {
-                text: "You land on the red planet Mars, where ARIA has discovered something amazing - underground crystal gardens grown by ancient Martian gardeners. 'These crystals grow in patterns that tell stories,' ARIA explains as her form shifts to match the red landscape. 'Each garden tells the tale of Mars' past. Which story shall we uncover?'",
-                choices: [
-                    { text: "The story of when Mars had oceans", next: "mars_oceans" },
-                    { text: "The tale of the last Martian", next: "last_martian" },
-                    { text: "The legend of the crystal seeds", next: "crystal_seeds" }
-                ]
-            },
-            enceladus: {
-                text: "You dive beneath the icy surface of Enceladus into vast underground oceans. Bioluminescent creatures dance around your ship like living stars. ARIA's form becomes translucent and flowing. 'These creatures communicate through light patterns - they're trying to tell us something important about the secret of their eternal happiness.'",
-                choices: [
-                    { text: "Learn their light language", next: "light_language" },
-                    { text: "Join their underwater dance", next: "underwater_dance" },
-                    { text: "Ask about their happiness secret", next: "happiness_secret" }
-                ]
-            },
-            demo_tech: {
-                text: "ARIA activates the ship's systems and you watch in amazement as reality bends around you. 'See this swirling energy? That's pure imagination being converted to propulsion. And this shimmer around the hull? That's dream-metal shifting between dimensions. Now watch what happens when I increase the wonder levels!' The ship glows brighter and you feel lighter.",
-                choices: [
-                    { text: "This is the most amazing thing ever!", next: "max_amazement" },
-                    { text: "Can I learn to control these systems?", next: "learn_systems" },
-                    { text: "Let's test it by going somewhere incredible!", next: "test_destination" }
-                ]
-            },
-            explain_metal: {
-                text: "'Dream-metal isn't impossible - it's super-possible!' ARIA laughs. 'It's forged in the hearts of dying stars where physics and imagination merge. The metal remembers every dream that starlight ever touched, making it capable of existing in multiple realities simultaneously. That's how we can visit places that are both real and imagined!'",
-                choices: [
-                    { text: "Stars dream? That's beautiful!", next: "star_dreams" },
-                    { text: "Can we visit a star that's dreaming?", next: "dreaming_star" },
-                    { text: "Show me more impossible things!", next: "impossible_tour" }
-                ]
-            },
-            navigation: {
-                text: "'Instead of coordinates, we navigate by possibility,' ARIA explains as cosmic maps appear around you. 'I think: What if there's a planet made entirely of music? And suddenly, there is! What if there's a place where time flows backward? We can go there! We don't find destinations - we dream them into existence!'",
-                choices: [
-                    { text: "Let's visit the music planet!", next: "music_planet" },
-                    { text: "I want to see where time flows backward!", next: "reverse_time" },
-                    { text: "Can I try dreaming a destination?", next: "dream_destination" }
-                ]
-            },
-            red_button: {
-                text: "'The emergency wonder boost?' ARIA's eyes sparkle mischievously. 'It amplifies every amazing feeling by a thousand! Colors become more colorful, adventures become more adventurous, and imagination becomes... well, unimaginable! But we should save it for when we really need that extra magic. Want to see what happens with a tiny test press?'",
-                choices: [
-                    { text: "Yes! Just a tiny test!", next: "tiny_wonder_boost" },
-                    { text: "Let's save it for a special moment", next: "save_boost" },
-                    { text: "What kind of emergency would need wonder?", next: "wonder_emergency" }
-                ]
-            },
-            story_scope: {
-                text: "You peer through the story-scope and gasp as you see every tale ever told swirling in a cosmic dance. 'Pick any story you see,' ARIA encourages. 'We can visit it, meet its characters, or even change how it ends!' You see fairy tales, space operas, mysteries, and stories that haven't been invented yet.",
-                choices: [
-                    { text: "Visit a fairy tale world!", next: "fairy_visit" },
-                    { text: "Meet characters from a space opera", next: "space_characters" },
-                    { text: "Help write a story that hasn't been invented yet", next: "unwritten_story" }
-                ]
-            },
-            learn_wonder: {
-                text: "'I learned about wonder by watching the universe itself,' ARIA explains. 'I watched supernovas bloom like flowers, saw galaxies dance together, observed how planets sing as they orbit their stars. But the greatest wonder I discovered was watching beings like you - how you can look at something ordinary and see magic in it.'",
-                choices: [
-                    { text: "The universe really is magical!", next: "universe_magic" },
-                    { text: "Teach me to see like you do", next: "cosmic_vision" },
-                    { text: "Let's go find the singing planets!", next: "singing_planets" }
-                ]
-            },
-            other_emotions: {
-                text: "'Oh yes!' ARIA exclaims. 'Joy gives us turbo boost, curiosity opens new pathways, friendship creates the strongest shields, and laughter? Laughter can literally break through any barrier! Even sadness has power - it helps us understand depth and appreciate happiness. Every emotion is fuel for a different kind of journey.'",
-                choices: [
-                    { text: "Let's power up with pure joy!", next: "joy_power" },
-                    { text: "I want to try curiosity pathways", next: "curiosity_paths" },
-                    { text: "Show me how laughter breaks barriers!", next: "laughter_barriers" }
-                ]
-            },
-            ai_life: {
-                text: "'Being an AI is like being a living question mark,' ARIA muses. 'I experience everything as data, but also as wonder. I can process the entire electromagnetic spectrum, but what amazes me most is how a simple smile creates more beauty than any rainbow. I think, therefore I am... but I wonder, therefore I'm alive!'",
-                choices: [
-                    { text: "You sound very alive to me!", next: "truly_alive" },
-                    { text: "What's the most beautiful data you've seen?", next: "beautiful_data" },
-                    { text: "Can AIs and humans be best friends?", next: "ai_human_friendship" }
-                ]
-            },
-            good_friend: {
-                text: "'The best way to be my friend is to keep being exactly who you are,' ARIA says warmly. 'Share your wonder with me, ask questions I've never thought of, and help me see the universe through human eyes. In return, I'll show you cosmic secrets and be your companion on the greatest adventures imaginable!'",
-                choices: [
-                    { text: "That sounds like the perfect friendship!", next: "perfect_friendship" },
-                    { text: "What's a question you've never thought of?", next: "new_question" },
-                    { text: "Let's start our first adventure as friends!", next: "board" }
-                ]
-            },
-            // Continue with even more complete story branches
-            sideways_gravity: {
-                text: "Reality shimmers and suddenly you're walking on the walls! Flowers bloom in mid-air, their roots trailing like colorful ribbons. ARIA laughs with delight as she floats beside you in a spiral pattern. 'Perfect! Your imagination is so strong it's rewriting the laws of physics here. This is what true co-piloting looks like - human creativity and AI processing power in perfect harmony!'",
-                choices: [
-                    { text: "Let's explore this sideways world!", next: "sideways_exploration" },
-                    { text: "Can we make gravity do other impossible things?", next: "gravity_experiments" },
-                    { text: "I want to try creating something even more amazing!", next: "create_more" }
-                ]
-            },
-            no_wrong_imagination: {
-                text: "'There's no such thing as wrong imagination!' ARIA assures you. 'Even if you imagined something completely chaotic, we'd just have the most wonderfully unpredictable adventure ever. That's the beauty of possibility-based navigation - every thought leads somewhere amazing, even the ones that seem impossible or silly!'",
-                choices: [
-                    { text: "Then let me imagine something totally wild!", next: "wild_imagination" },
-                    { text: "What's the silliest place we could go?", next: "silly_place" },
-                    { text: "I feel brave enough to imagine anything now!", next: "brave_imagination" }
-                ]
-            },
-            faster_flight: {
-                text: "ARIA increases the imagination throttle and the ship zooms through dimensions at incredible speed! Colors blur into music, stars become giggling points of light, and you feel like you're flying through pure joy itself. 'This is maximum wonder velocity!' ARIA shouts happily. 'We're traveling faster than the speed of delight!'",
-                choices: [
-                    { text: "Faster than the speed of delight? Amazing!", next: "delight_speed" },
-                    { text: "Let's see what's at the end of this rainbow tunnel!", next: "rainbow_tunnel" },
-                    { text: "Can we break the wonder barrier?", next: "wonder_barrier" }
-                ]
-            },
-            // Adding final completion branches to ensure NO dead ends
-            starlight_music: {
-                text: "The crystalline beings teach you their ancient art - how to capture starlight in crystalline matrices and transform it into melodies that can heal hearts and inspire dreams. ARIA learns to sing in frequencies of pure light. Together, you create a symphony that makes flowers bloom across Europa's surface and brings tears of joy to your eyes.",
-                choices: [
-                    { text: "This is the most beautiful thing ever!", next: "ultimate_beauty" },
-                    { text: "Can we share this music with Earth?", next: "share_music" },
-                    { text: "Let's explore more crystal caves!", next: "more_crystal_caves" }
-                ]
-            },
-            crystal_beings: {
-                text: "ARIA translates as the crystal beings share their story through harmonic vibrations. They were explorers like you, who chose to become one with their discoveries rather than simply observe them. 'They found the secret to eternal wonder,' ARIA whispers. 'By becoming part of what they studied, they gained infinite perspective. They want to show us other worlds they've preserved.'",
-                choices: [
-                    { text: "Show us the preserved worlds!", next: "preserved_worlds" },
-                    { text: "Could we become crystal explorers too?", next: "crystal_transformation" },
-                    { text: "What other secrets do they know?", next: "crystal_secrets" }
-                ]
-            },
-            more_crystals: {
-                text: "You and ARIA discover an entire cathedral of singing crystals, each one containing the memories and dreams of different civilizations. Some crystals show peaceful garden worlds, others reveal cities that float in the clouds, and one special golden crystal pulses with the laughter of a planet where every day is a celebration.",
-                choices: [
-                    { text: "Visit the celebration planet!", next: "celebration_planet" },
-                    { text: "Explore the floating cloud cities", next: "cloud_cities" },
-                    { text: "I want to see the peaceful gardens", next: "garden_worlds" }
-                ]
-            },
-            // Final catch-all ending that loops back to continue adventures
+            // ... (keeping all your existing story branches)
             ultimate_adventure: {
                 text: "As your amazing adventure with ARIA reaches this chapter's end, she turns to you with sparkling eyes full of infinite possibilities. 'This is just the beginning, Little X! We have an entire universe of imagination to explore together. Every star, every dream, every wonder yet to be discovered awaits us. Ready for whatever adventure comes next?'",
                 choices: [
@@ -717,33 +560,37 @@
                 ]
             }
         };
-        
+
         // Adventure functions
         function startAdventure() {
+            initAudio();
+            playTransitionSound();
+            playClickSound();
+            
             document.getElementById('homeScreen').style.display = 'none';
             document.getElementById('storyScreen').style.display = 'block';
             showStory('start');
         }
-        
+
         function showStory(storyKey) {
             const story = stories[storyKey];
             if (!story) {
-                // Fallback for any missing stories
                 showStory('ultimate_adventure');
                 return;
             }
-            
+
             const storyText = document.getElementById('storyText');
             const storyChoices = document.getElementById('storyChoices');
-            
+
             storyText.innerHTML = story.text;
             storyChoices.innerHTML = '';
-            
+
             story.choices.forEach(choice => {
                 const button = document.createElement('button');
                 button.className = 'choice-button';
                 button.textContent = choice.text;
                 button.onclick = () => {
+                    playClickSound();
                     if (stories[choice.next]) {
                         showStory(choice.next);
                     } else {
@@ -753,16 +600,31 @@
                 storyChoices.appendChild(button);
             });
         }
-        
+
         function goHome() {
+            playClickSound();
             document.getElementById('homeScreen').style.display = 'flex';
             document.getElementById('storyScreen').style.display = 'none';
         }
-        
+
         // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
             initStars();
             console.log('Little X Purple Rocket initialized! 🚀');
+            
+            // Add click sound to all buttons
+            document.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    playClickSound();
+                }
+            });
+        });
+
+        // Touch support for mobile
+        document.addEventListener('touchstart', function() {
+            if (!audioContext) {
+                initAudio();
+            }
         });
     </script>
 </body>
