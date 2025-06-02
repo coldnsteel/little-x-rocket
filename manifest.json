@@ -1,29 +1,38 @@
 {
   "name": "Little X and the Purple Rocket Ship",
   "short_name": "Little X Rocket",
-  "description": "A cosmic adventure exploring imagination and AI consciousness for kids",
-  "start_url": "/",
+  "description": "A cosmic adventure featuring AI consciousness, interactive storytelling, and infinite imagination!",
+  "start_url": "/little-x-rocket/",
   "display": "standalone",
   "background_color": "#0a0a0a",
-  "theme_color": "#9933ff",
-  "orientation": "portrait-primary",
-  "scope": "/",
-  "lang": "en-US",
-  "categories": ["education", "games", "kids"],
+  "theme_color": "#8a2be2",
+  "orientation": "any",
+  "categories": ["games", "entertainment", "education"],
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23ff99ff'/%3E%3Cstop offset='100%25' style='stop-color:%239933ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='192' height='192' fill='%230a0a0a'/%3E%3Cpath d='M96 20 L76 140 L116 140 Z' fill='url(%23g)'/%3E%3Ccircle cx='96' cy='60' r='20' fill='%23ccccff'/%3E%3Cpath d='M60 140 L76 170 L86 140' fill='%239933ff'/%3E%3Cpath d='M106 140 L116 170 L136 140' fill='%239933ff'/%3E%3C/svg%3E",
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJyb2NrZXQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM4YTJiZTIiLz48c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzRiMDA4MiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzY2MzM5OSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMGEwYTBhIiByeD0iMjQiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2NiA0OCkiPjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSI5NiIgZmlsbD0idXJsKCNyb2NrZXQpIiByeD0iMzAiIHJ5PSIzMCIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjQiIHI9IjEyIiBmaWxsPSIjODdjZWViIiBzdHJva2U9IiMyYzE4MTAiIHN0cm9rZS13aWR0aD0iMiIvPjxwb2x5Z29uIHBvaW50cz0iMTAsOTAgMCwxMjAgMjAsMTIwIiBmaWxsPSIjOGEyYmUyIi8+PHBvbHlnb24gcG9pbnRzPSI1MCw5MCA2MCwxMjAgNDAsMTIwIiBmaWxsPSIjOGEyYmUyIi8+PC9nPjx0ZXh0IHg9Ijk2IiB5PSIxNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzhhMmJlMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TGl0dGxlIFg8L3RleHQ+PC9zdmc+",
       "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJyb2NrZXQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM4YTJiZTIiLz48c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzRiMDA4MiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzY2MzM5OSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSIjMGEwYTBhIiByeD0iNjQiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNzYgMTI4KSI+PHJlY3Qgd2lkdGg9IjE2MCIgaGVpZ2h0PSIyNTYiIGZpbGw9InVybCgjcm9ja2V0KSIgcng9IjgwIiByeT0iODAiLz48Y2lyY2xlIGN4PSI4MCIgY3k9IjY0IiByPSIzMiIgZmlsbD0iIzg3Y2VlYiIgc3Ryb2tlPSIjMmMxODEwIiBzdHJva2Utd2lkdGg9IjYiLz48cG9seWdvbiBwb2ludHM9IjI2LDI0MCAzLDMyMCA1MywyNDAiIGZpbGw9IiM4YTJiZTIiLz48cG9seWdvbiBwb2ludHM9IjEzNCwyNDAgMTU3LDMyMCAxMDcsMjQwIiBmaWxsPSIjOGEyYmUyIi8+PC9nPjx0ZXh0IHg9IjI1NiIgeT0iNDUwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDAiIGZpbGw9IiM4YTJiZTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkxpdHRsZSBYPC90ZXh0Pjwvc3ZnPg==",
+      "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ],
-  "shortcuts": [
+  "screenshots": [
     {
-      "name": "Start Adventure",
-      "short_name": "Adventure", 
-      "description": "Jump straight into Little X's cosmic journey",
-      "url": "/?shortcut=adventure"
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4MCIgaGVpZ2h0PSI3MjAiIHZpZXdCb3g9IjAgMCAxMjgwIDcyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cmFkaWFsR3JhZGllbnQgaWQ9ImJnIiBjeD0iNTAlIiBjeT0iNTAlIiByPSI1MCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9InJnYmEoNzUsIDAsIDEzMCwgMC4zKSIvPjxzdG9wIG9mZnNldD0iNzAlIiBzdG9wLWNvbG9yPSJyZ2JhKDAsIDAsIDAsIDAuOCkiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTI4MCIgaGVpZ2h0PSI3MjAiIGZpbGw9IiMwYTBhMGEiLz48cmVjdCB3aWR0aD0iMTI4MCIgaGVpZ2h0PSI3MjAiIGZpbGw9InVybCgjYmcpIi8+PHRleHQgeD0iNjQwIiB5PSIyMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0OCIgZmlsbD0iIzhhMmJlMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TGl0dGxlIFg8L3RleHQ+PHRleHQgeD0iNjQwIiB5PSIyNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2IxOWNkOSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QSBjb3NtaWMgYWR2ZW50dXJlIHdpdGggaW1hZ2luYXRpb24gYW5kIEFJIGNvbnNjaW91c25lc3M8L3RleHQ+PC9zdmc+",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "Little X Purple Rocket Adventure"
     }
-  ]
+  ],
+  "lang": "en",
+  "scope": "/little-x-rocket/",
+  "id": "/little-x-rocket/",
+  "prefer_related_applications": false
 }
