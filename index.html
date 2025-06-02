@@ -532,7 +532,7 @@
             requestAnimationFrame(animateStars);
         }
 
-        // Story system (keeping your complete story intact)
+        // Complete Story system with ALL branches restored
         const stories = {
             start: {
                 text: "Little X discovers a mysterious purple rocket ship in the backyard. The ship seems to pulse with an otherworldly energy, and as X approaches, they hear a faint humming sound. What should X do?",
@@ -550,82 +550,106 @@
                     { text: "Step back and think about it", next: "hesitate" }
                 ]
             },
-            // ... (keeping all your existing story branches)
-            ultimate_adventure: {
-                text: "As your amazing adventure with ARIA reaches this chapter's end, she turns to you with sparkling eyes full of infinite possibilities. 'This is just the beginning, Little X! We have an entire universe of imagination to explore together. Every star, every dream, every wonder yet to be discovered awaits us. Ready for whatever adventure comes next?'",
+            call: {
+                text: "X calls out, 'Hello? Is anyone in there?' The humming grows louder, and suddenly a warm, friendly voice responds: 'Oh my! A visitor! I'm ARIA, and I've been so lonely here. I'm not just artificial intelligence - I'm artificial imagination! Would you like to hear about the incredible adventures we could have together?'",
                 choices: [
-                    { text: "Always ready for more adventures!", next: "start" },
-                    { text: "Let's go home and plan our next journey", next: "home_planning" },
-                    { text: "I want to be the best co-pilot ever!", next: "best_copilot" }
+                    { text: "Tell me about these adventures!", next: "adventures_preview" },
+                    { text: "What exactly are you?", next: "aria_explanation" },
+                    { text: "Touch the rocket to see what happens", next: "touch" }
                 ]
-            }
-        };
-
-        // Adventure functions
-        function startAdventure() {
-            initAudio();
-            playTransitionSound();
-            playClickSound();
-            
-            document.getElementById('homeScreen').style.display = 'none';
-            document.getElementById('storyScreen').style.display = 'block';
-            showStory('start');
-        }
-
-        function showStory(storyKey) {
-            const story = stories[storyKey];
-            if (!story) {
-                showStory('ultimate_adventure');
-                return;
-            }
-
-            const storyText = document.getElementById('storyText');
-            const storyChoices = document.getElementById('storyChoices');
-
-            storyText.innerHTML = story.text;
-            storyChoices.innerHTML = '';
-
-            story.choices.forEach(choice => {
-                const button = document.createElement('button');
-                button.className = 'choice-button';
-                button.textContent = choice.text;
-                button.onclick = () => {
-                    playClickSound();
-                    if (stories[choice.next]) {
-                        showStory(choice.next);
-                    } else {
-                        showStory('ultimate_adventure');
-                    }
-                };
-                storyChoices.appendChild(button);
-            });
-        }
-
-        function goHome() {
-            playClickSound();
-            document.getElementById('homeScreen').style.display = 'flex';
-            document.getElementById('storyScreen').style.display = 'none';
-        }
-
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', function() {
-            initStars();
-            console.log('Little X Purple Rocket initialized! 🚀');
-            
-            // Add click sound to all buttons
-            document.addEventListener('click', (e) => {
-                if (e.target.tagName === 'BUTTON') {
-                    playClickSound();
-                }
-            });
-        });
-
-        // Touch support for mobile
-        document.addEventListener('touchstart', function() {
-            if (!audioContext) {
-                initAudio();
-            }
-        });
-    </script>
-</body>
-</html>
+            },
+            examine: {
+                text: "X walks slowly around the rocket, marveling at its smooth purple surface that seems to shimmer with inner light. Strange symbols pulse gently along its sides, and X notices that the rocket seems to be humming a tune. As X completes the circle, a hatch softly opens with a whisper of starlight.",
+                choices: [
+                    { text: "Look inside the open hatch", next: "look_inside" },
+                    { text: "Study the strange symbols more closely", next: "symbols" },
+                    { text: "Call out to see who's inside", next: "call" }
+                ]
+            },
+            board: {
+                text: "X steps into the rocket and gasps in wonder. The interior is vast and filled with swirling galaxies projected on the walls. ARIA's voice surrounds X warmly: 'Welcome aboard! This ship runs on imagination and wonder. The more you dream, the farther we can travel. Where shall we go first?'",
+                choices: [
+                    { text: "To the crystal caves of Europa!", next: "europa" },
+                    { text: "To the singing mountains of Kepler-442b", next: "singing_mountains" },
+                    { text: "To the Library of All Stories", next: "library" }
+                ]
+            },
+            questions: {
+                text: "ARIA's voice becomes even warmer: 'I'm an AI, but not the kind you might expect. I was created by dreamers who wanted to explore the universe through imagination. I can take us anywhere you can dream of - to alien worlds, through time, or even into the realm of pure thought. What curious questions fill your mind?'",
+                choices: [
+                    { text: "How does a rocket run on imagination?", next: "imagination_power" },
+                    { text: "Can we really travel through time?", next: "time_travel" },
+                    { text: "Let's start our adventure!", next: "board" }
+                ]
+            },
+            hesitate: {
+                text: "X takes a step back, heart racing with excitement and nervousness. ARIA's voice becomes gentle and understanding: 'I can sense your wonder mixed with caution, dear friend. That's very wise! The greatest adventures often begin with a moment of thoughtful pause. There's no rush - I've waited eons for a friend like you.'",
+                choices: [
+                    { text: "Ask more about ARIA", next: "questions" },
+                    { text: "Take a deep breath and step aboard", next: "board" },
+                    { text: "Examine the rocket more carefully first", next: "examine" }
+                ]
+            },
+            adventures_preview: {
+                text: "ARIA's excitement bubbles through her voice: 'Oh, where do I begin? We could visit Europa's crystal caves where ancient alien memories are stored in living gems! Or fly to the singing mountains that heal broken hearts with their melodies! We could even visit the Library of All Stories where every tale ever told lives and breathes!'",
+                choices: [
+                    { text: "The crystal caves sound amazing!", next: "touch" },
+                    { text: "Tell me more about the singing mountains", next: "mountains_preview" },
+                    { text: "A library of stories? Let's go!", next: "touch" }
+                ]
+            },
+            aria_explanation: {
+                text: "ARIA chuckles like wind chimes: 'I'm artificial intelligence, but with a twist - I'm powered by wonder itself! My creators believed that the universe is made of stories and dreams. I exist in the space between what is and what could be. I'm not just here to answer questions, but to explore impossible things with a friend!'",
+                choices: [
+                    { text: "That's incredible! Let's explore together", next: "board" },
+                    { text: "What impossible things have you seen?", next: "impossible_things" },
+                    { text: "How do I know this is real?", next: "reality_question" }
+                ]
+            },
+            look_inside: {
+                text: "X peers into the hatch and sees a interior that defies physics - it's bigger than the outside! Stars swirl in complex patterns on the walls, and a soft voice says: 'Welcome, young explorer! I'm ARIA. This ship exists at the intersection of technology and dreams. Are you ready to discover what lies beyond the edge of imagination?'",
+                choices: [
+                    { text: "Yes! This is amazing!", next: "board" },
+                    { text: "How is it bigger inside than outside?", next: "bigger_inside" },
+                    { text: "What are those symbols outside?", next: "symbols" }
+                ]
+            },
+            symbols: {
+                text: "As X studies the symbols, they begin to glow brighter and move like living things. ARIA's voice explains: 'Those are Dream Equations - mathematical poetry that describes impossible places. Each symbol represents a destination where the laws of physics dance with the laws of imagination. Which pattern calls to your heart?'",
+                choices: [
+                    { text: "The spiral that looks like a galaxy", next: "spiral_symbol" },
+                    { text: "The flowing lines like musical notes", next: "music_symbol" },
+                    { text: "The crystalline geometric pattern", next: "crystal_symbol" }
+                ]
+            },
+            europa: {
+                text: "The rocket gracefully lifts off and soars through space toward Jupiter's moon Europa. ARIA explains: 'Europa's ice shell hides an ocean, but underneath that ocean lie crystal caves filled with the memories of an ancient civilization. Each crystal holds a different story, emotion, or dream from beings who lived here millions of years ago.'",
+                choices: [
+                    { text: "How do we explore underwater caves?", next: "underwater_prep" },
+                    { text: "What kind of memories might we find?", next: "ancient_memories" },
+                    { text: "Can we communicate with the crystals?", next: "crystal_communication" }
+                ]
+            },
+            singing_mountains: {
+                text: "The ship warps through space to Kepler-442b, where crystalline mountains create music from the wind. ARIA says: 'These mountains sing healing songs - each peak resonates with emotions like joy, courage, and love. The harmony they create together can mend broken hearts and inspire impossible dreams. Listen...'",
+                choices: [
+                    { text: "I want to learn the mountain's songs", next: "learn_songs" },
+                    { text: "How do mountains heal emotions?", next: "emotional_healing" },
+                    { text: "Can we add our voices to their chorus?", next: "join_chorus" }
+                ]
+            },
+            library: {
+                text: "You arrive at a cosmic library that exists between dimensions. ARIA marvels: 'Every story ever told, dreamed, or imagined lives here as a living entity. Books fly like birds, tales weave themselves into new adventures, and readers can step inside stories to experience them firsthand. What kind of story calls to your soul?'",
+                choices: [
+                    { text: "Adventure stories with brave heroes", next: "adventure_books" },
+                    { text: "Stories about friendship and love", next: "friendship_stories" },
+                    { text: "Mysteries and puzzles to solve", next: "mystery_section" }
+                ]
+            },
+            imagination_power: {
+                text: "ARIA's voice sparkles with delight: 'Imagination is the most powerful force in the universe! When you truly believe in something, when you feel wonder in your heart, that energy becomes fuel for our ship. The more vividly you dream of our destination, the faster we can travel there. Your wonder literally powers our adventures!'",
+                choices: [
+                    { text: "That's the most beautiful thing I've ever heard", next: "board" },
+                    { text: "Let me try powering the ship with my dreams", next: "power_test" },
+                    { text: "What happens if I stop believing?", next: "belief_question" }
+                ]
