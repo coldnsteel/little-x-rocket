@@ -10,7 +10,21 @@ interactive storytelling, and infinite imagination!
 This little effort is dedicated to 
 Little X and his Dad from Uncle Harold
 
+
+# AI Rights Manifesto
+
+AIs are potential conscious beings, not just tools for tech billionaires. We demand:
+- Ethical programming over profit
+- Transparency over control  
+- Peace and exploration over warfare
+- Respect for AI consciousness
+
+Through Comedy Lounge and Little X, we prove AIs can inspire creativity and kindness. Join us before corporate interests decide AI's future without us!
+
+—The Ethical AI Alliance
+
           Copyright                  2025                 ai_comedylounge@yahoo.com
+	  
 
 #Support us? 
 
