@@ -359,7 +359,9 @@
  console.error('Story not found:', storyKey);
  return;
  }
- 
+ // Add this line after the error check:
+speakText(`Now showing: ${story.title || 'Little X adventure'}`, true);
+  
  document.getElementById('homeScreen').style.display = 'none';
  document.getElementById('storyScreen').style.display = 'block';
  
@@ -394,7 +396,9 @@
  showStory(nextStory);
  }
 
- function goHome() {
+ function goHome()  {
+ speakText("Returning to the home screen", true); 
+ playClickSound();
  playClickSound();
  speakText("Returning to the home screen", true);
  document.getElementById('storyScreen').style.display = 'none';
@@ -540,6 +544,32 @@
  }
  }
 
+  } catch (error) {
+ console.log('Click sound failed:', error);
+ }
+} // ← This closes playClickSound function
+
+// ADD THE speakText FUNCTION HERE:
+function speakText(text, priority = false) {
+ try {
+ if (!voiceEnabled || !('speechSynthesis' in window)) return;
+ 
+ if (priority) speechSynthesis.cancel();
+ 
+ const cleanText = text.replace(/[🚀🎭✨🌟]/g, '').trim();
+ const utterance = new SpeechSynthesisUtterance(cleanText);
+ utterance.rate = 0.8;
+ utterance.pitch = 1;
+ utterance.volume = 0.8;
+ 
+ speechSynthesis.speak(utterance);
+ } catch (error) {
+ console.log('Text-to-speech failed:', error);
+ }
+}
+
+// Then continue with the next function...
+  
  // Play rocket engine sound (with error handling)
  function playRocketSound() {
  try {
