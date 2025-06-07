@@ -3,9 +3,9 @@
 
 const CACHE_NAME = 'little-x-rocket-v1';
 const urlsToCache = [
-  '/little-x-rocket/',
-  '/little-x-rocket/index.html',
-  '/little-x-rocket/manifest.json'
+  './',
+  './index.html',
+  './manifest.json'
 ];
 
 // Install event - cache resources
@@ -77,7 +77,7 @@ self.addEventListener('fetch', (event) => {
         .catch(() => {
           // If both cache and network fail, show offline page
           if (event.request.destination === 'document') {
-            return caches.match('/little-x-rocket/index.html');
+            return caches.match('./index.html');
           }
         })
     );
@@ -122,7 +122,7 @@ self.addEventListener('notificationclick', (event) => {
 
   if (event.action === 'explore') {
     event.waitUntil(
-      clients.openWindow('/little-x-rocket/')
+      clients.openWindow('./')
     );
   }
 });
