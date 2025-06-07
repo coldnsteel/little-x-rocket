@@ -4,21 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Little X and the Purple Rocket Ship</title>
-    <link rel="manifest" href="manifest.json">
-    <script>
-        // Register service worker for offline functionality
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(function(registration) {
-                        console.log('🚀 Service Worker registered successfully:', registration.scope);
-                    })
-                    .catch(function(error) {
-                        console.log('❌ Service Worker registration failed:', error);
-                    });
-            });
-        }
-    </script>
     <style>
         * {
             margin: 0;
@@ -315,7 +300,7 @@
         let currentStory = 'start';
         let autoReadEnabled = false;
         
-        // Story data - simplified and working
+        // Story data
         const storyData = {
             start: {
                 text: "Little X discovers a mysterious purple rocket ship in the backyard. The ship pulses with otherworldly energy, and as X approaches, they hear a gentle humming sound. What should X do?",
@@ -408,32 +393,35 @@
         };
         
         // Text-to-speech functions
-        function speakText(text) {
+        function readText() {
+            const text = document.getElementById('storyText').textContent;
+            
             if (!('speechSynthesis' in window)) {
-                console.log('Speech synthesis not supported');
+                alert('Text-to-speech is not supported in your browser. Please try Chrome, Firefox, or Safari.');
                 return;
             }
             
-            try {
-                speechSynthesis.cancel();
-                
-                // Clean text for speech
-                const cleanText = text.replace(/[🚀🔊⏹️🔄←]/g, '').trim();
-                
-                const utterance = new SpeechSynthesisUtterance(cleanText);
-                utterance.rate = 0.8;
-                utterance.pitch = 1;
-                utterance.volume = 0.9;
-                
-                speechSynthesis.speak(utterance);
-            } catch (error) {
-                console.log('Speech error:', error);
-            }
-        }
-        
-        function readText() {
-            const text = document.getElementById('storyText').textContent;
-            speakText(text);
+            // Stop any current speech
+            speechSynthesis.cancel();
+            
+            // Clean text for speech (remove emojis)
+            const cleanText = text.replace(/[🚀🔊⏹️🔄←]/g, '').trim();
+            
+            if (!cleanText) return;
+            
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.rate = 0.8;
+            utterance.pitch = 1;
+            utterance.volume = 0.9;
+            
+            // Handle errors
+            utterance.onerror = function(event) {
+                console.error('Speech error:', event.error);
+                alert('Text-to-speech failed. Please try again or use a different browser.');
+            };
+            
+            // Speak the text
+            speechSynthesis.speak(utterance);
         }
         
         function stopSpeech() {
@@ -474,7 +462,7 @@
             
             // Auto-read if enabled
             if (autoReadEnabled) {
-                setTimeout(() => speakText(story.text), 500);
+                setTimeout(() => readText(), 500);
             }
             
             // Set up choices
