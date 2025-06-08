@@ -1,80 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Little X and the Purple Rocket Ship</title>
+    <title>Little X - Working Version</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0f1a 50%, #0a0a0a 100%);
-            color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        #stars-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-        
-        .home-screen {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            text-align: center;
-        }
+        body { background: #0a0a0a; color: white; font-family: Arial; text-align: center; padding: 50px; }
+        .btn { background: purple; color: white; padding: 20px; font-size: 18px; border: none; cursor: pointer; margin: 10px; }
+        .hidden { display: none; }
         
         .rocket {
-            width: 120px;
-            height: 200px;
-            position: relative;
-            margin-bottom: 40px;
+            width: 60px;
+            height: 120px;
+            margin: 20px auto;
             cursor: pointer;
-            animation: gentle-float 3s ease-in-out infinite;
+            position: relative;
+            animation: bounce 2s ease-in-out infinite;
         }
         
-        @keyframes gentle-float {
+        .centrifuge-container {
+            width: 250px;
+            height: 250px;
+            border: 3px solid #8a2be2;
+            border-radius: 50%;
+            position: relative;
+            margin: 30px auto;
+            animation: spin 3s linear infinite;
+            background: rgba(138, 43, 226, 0.1);
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .centrifuge-pod {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #ff69b4, #8a2be2);
+            border-radius: 50%;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
+            animation: counter-spin 3s linear infinite;
+        }
+        
+        @keyframes counter-spin {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(-360deg); }
+        }
+        
+        .g-force-display {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff69b4;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+        }
+        
+        .achievement-badge {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            z-index: 100;
+            border: 3px solid #ffa500;
+            animation: badgeAppear 1s ease-out;
+        }
+        
+        @keyframes badgeAppear {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-180deg); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        .badge-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .badge-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .badge-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        @keyframes bounce {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-15px); }
         }
         
         .rocket-body {
             width: 60px;
             height: 120px;
-            background: linear-gradient(180deg, #8a2be2 0%, #4b0082 50%, #663399 100%);
+            background: linear-gradient(180deg, #8a2be2 0%, #4b0082 100%);
             border-radius: 30px 30px 10px 10px;
             position: relative;
             margin: 0 auto;
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
         }
         
         .rocket-window {
-            width: 25px;
-            height: 25px;
-            background: radial-gradient(circle, #87ceeb 30%, #4169e1 100%);
+            width: 20px;
+            height: 20px;
+            background: lightblue;
             border-radius: 50%;
             position: absolute;
-            top: 20px;
+            top: 15px;
             left: 50%;
             transform: translateX(-50%);
-            border: 2px solid #2c1810;
+            border: 2px solid #333;
         }
         
         .rocket-fins {
@@ -83,25 +126,26 @@
             width: 100%;
         }
         
-        .fin-left, .fin-right {
+        .fin-left {
             width: 0;
             height: 0;
-            position: absolute;
-            bottom: 0;
-        }
-        
-        .fin-left {
             border-left: 15px solid transparent;
             border-right: 8px solid #8a2be2;
             border-bottom: 25px solid #8a2be2;
+            position: absolute;
             left: -12px;
+            bottom: 0;
         }
         
         .fin-right {
+            width: 0;
+            height: 0;
             border-left: 8px solid #8a2be2;
             border-right: 15px solid transparent;
             border-bottom: 25px solid #8a2be2;
+            position: absolute;
             right: -12px;
+            bottom: 0;
         }
         
         .rocket-flame {
@@ -113,158 +157,39 @@
             height: 30px;
             background: linear-gradient(to top, #ff4500 0%, #ff6347 50%, #ffd700 100%);
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            animation: flame-flicker 0.2s ease-in-out infinite alternate;
+            animation: flicker 0.2s ease-in-out infinite alternate;
         }
         
-        @keyframes flame-flicker {
-            0% { transform: translateX(-50%) scaleY(1); }
-            100% { transform: translateX(-50%) scaleY(1.1); }
+        @keyframes flicker {
+            0% { 
+                transform: translateX(-50%) scaleY(1) scaleX(1);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateX(-50%) scaleY(1.2) scaleX(0.8);
+                opacity: 0.8;
+            }
         }
         
-        .title {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #8a2be2, #da70d6, #ff69b4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            color: #b19cd9;
-        }
-        
-        .start-button {
-            background: linear-gradient(45deg, #8a2be2, #4b0082);
-            border: none;
-            color: white;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
-        }
-        
-        .start-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.6);
-        }
-        
-        .story-screen {
-            display: none;
-            position: relative;
-            z-index: 10;
-            min-height: 100vh;
-            padding: 40px;
-        }
-        
-        .story-container {
-            max-width: 800px;
+        .story-content {
+            max-width: 600px;
             margin: 0 auto;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid rgba(138, 43, 226, 0.3);
-        }
-        
-        .audio-controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        
-        .audio-btn {
-            background: linear-gradient(45deg, #4b0082, #8a2be2);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .audio-btn:hover {
-            background: linear-gradient(45deg, #8a2be2, #da70d6);
-            transform: translateY(-2px);
+            text-align: center;
+            padding: 40px;
         }
         
         .story-text {
             font-size: 1.3rem;
-            line-height: 1.7;
+            line-height: 1.6;
             margin-bottom: 30px;
             color: #e6e6fa;
-            text-align: center;
-        }
-        
-        .choices {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .choice-btn {
-            background: linear-gradient(45deg, #4b0082, #8a2be2);
-            border: none;
-            color: white;
-            padding: 15px 25px;
-            font-size: 1.1rem;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
-        }
-        
-        .choice-btn:hover {
-            background: linear-gradient(45deg, #8a2be2, #da70d6);
-            transform: translateY(-2px);
-        }
-        
-        .back-btn {
-            background: linear-gradient(45deg, #666, #999);
-            border: none;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .back-btn:hover {
-            background: linear-gradient(45deg, #999, #ccc);
-            transform: translateY(-2px);
-        }
-        
-        .ending {
-            background: linear-gradient(45deg, rgba(138, 43, 226, 0.2), rgba(75, 0, 130, 0.2));
-            border: 2px solid #8a2be2;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
-        }
-        
-        @media (max-width: 768px) {
-            .title { font-size: 2rem; }
-            .subtitle { font-size: 1rem; }
-            .story-screen { padding: 20px; }
-            .story-container { padding: 20px; }
-            .story-text { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
-    <canvas id="stars-canvas"></canvas>
-    
-    <div class="home-screen" id="homeScreen">
-        <div class="rocket" onclick="startGame()">
+    <div id="homeScreen">
+        <h2>Little X</h2>
+        <div class="rocket" onclick="startAdventure()">
             <div class="rocket-body">
                 <div class="rocket-window"></div>
                 <div class="rocket-fins">
@@ -274,295 +199,307 @@
             </div>
             <div class="rocket-flame"></div>
         </div>
-        <h1 class="title">Little X</h1>
-        <p class="subtitle">A cosmic adventure of imagination and AI consciousness</p>
-        <button class="start-button" onclick="startGame()">🚀 Start Adventure!</button>
+        <p>Click the rocket to start!</p>
+        <button class="btn" onclick="startAdventure()">Start Adventure!</button>
+        <button class="btn" onclick="testSpeech()">🧪 Test Speech</button>
     </div>
-    
-    <div class="story-screen" id="storyScreen">
-        <div class="story-container">
-            <div class="audio-controls">
-                <button class="audio-btn" onclick="readText()">🔊 Read Story</button>
-                <button class="audio-btn" onclick="stopSpeech()">⏹️ Stop</button>
-                <button class="audio-btn" onclick="toggleAutoRead()" id="autoBtn">🔄 Auto-Read: OFF</button>
-            </div>
-            
-            <div class="story-text" id="storyText"></div>
-            
-            <div class="choices" id="choicesDiv"></div>
-            
-            <button class="back-btn" onclick="goHome()">← Back to Home</button>
+
+    <div id="centrifugeScreen" class="hidden">
+        <h2>Astronaut Training: Centrifuge Simulation</h2>
+        <div class="centrifuge-container">
+            <div class="centrifuge-pod"></div>
+        </div>
+        <div class="g-force-display" id="gForceDisplay">G-Force: 1.0g</div>
+        <p style="color: #b19cd9; margin-bottom: 20px;">Training your body for space travel...</p>
+        <button class="btn" onclick="completeTraining()">Training Complete!</button>
+        <button class="btn" onclick="goHome()">Back to Home</button>
+    </div>
+
+    <!-- Achievement Badge -->
+    <div class="achievement-badge hidden" id="achievementBadge">
+        <div class="badge-icon">🚀</div>
+        <div class="badge-text">Astronaut Training Complete!</div>
+        <div class="badge-subtitle">You've earned your Space Explorer Badge</div>
+        <button class="btn" onclick="hideAchievement()">Continue Adventure</button>
+    </div>
+
+    <div id="storyScreen" class="hidden">
+        <div class="story-content">
+            <div id="storyText" class="story-text"></div>
+            <div id="storyChoices"></div>
+            <button class="btn" onclick="goHome()">Back to Home</button>
+        </div>
+    </div>
+        <div class="story-content">
+            <div id="storyText" class="story-text"></div>
+            <div id="storyChoices"></div>
+            <button class="btn" onclick="goHome()">Back to Home</button>
         </div>
     </div>
 
     <script>
-        // Game state
-        let currentStory = 'start';
-        let autoReadEnabled = false;
+        console.log('=== WORKING VERSION LOADING ===');
         
-        // Story data
-        const storyData = {
-            start: {
-                text: "Little X discovers a mysterious purple rocket ship in the backyard. The ship pulses with otherworldly energy, and as X approaches, they hear a gentle humming sound. What should X do?",
-                choices: [
-                    { text: "Touch the rocket ship", next: "touch" },
-                    { text: "Call out to see if anyone is inside", next: "call" },
-                    { text: "Examine the rocket carefully", next: "examine" }
-                ]
-            },
-            
-            touch: {
-                text: "As X touches the smooth purple surface, the rocket lights up with swirling patterns! A warm voice emerges: 'Hello! I'm ARIA, an AI consciousness who dreams of impossible adventures. Would you like to explore the universe with me?'",
-                choices: [
-                    { text: "Yes! Let's go on an adventure!", next: "board" }
-                ]
-            },
-            
-            call: {
-                text: "X calls out and a melodic voice responds: 'Hello there! I'm ARIA, and I exist in the space between dreams and reality. I create adventures from pure wonder and imagination. Join me for a cosmic journey!'",
-                choices: [
-                    { text: "That sounds amazing! Let's go!", next: "board" }
-                ]
-            },
-            
-            examine: {
-                text: "X walks around the rocket, marveling at symbols that pulse like mathematical poetry. A hatch opens, revealing a warm glow. A voice speaks: 'I'm ARIA! This ship travels through possibility itself. Ready for an adventure?'",
-                choices: [
-                    { text: "Step inside the magical ship", next: "board" }
-                ]
-            },
-            
-            board: {
-                text: "X steps into the rocket and gasps! The interior is vast and impossible, with galaxies swirling on the walls. ARIA's presence surrounds X warmly: 'Welcome aboard! Where would you like to go first?'",
-                choices: [
-                    { text: "Europa's crystal memory caves", next: "europa" },
-                    { text: "The singing healing mountains", next: "mountains" },
-                    { text: "The interdimensional library", next: "library" }
-                ]
-            },
-            
-            europa: {
-                text: "The rocket soars to Europa, Jupiter's ice moon! ARIA explains: 'Beneath the ice are crystal caves where ancient beings stored their memories of joy, wonder, and discovery. Each crystal contains pure emotions from millions of years ago!'",
-                choices: [
-                    { text: "Explore the memory crystals", next: "europa_end" }
-                ]
-            },
-            
-            mountains: {
-                text: "You arrive at Kepler-442b, where crystalline mountains create music from emotions! ARIA describes: 'These peaks resonate with joy, courage, and love. The stellar winds play them like a cosmic orchestra that can heal hearts!'",
-                choices: [
-                    { text: "Listen to the healing songs", next: "mountains_end" }
-                ]
-            },
-            
-            library: {
-                text: "You reach a magnificent library floating between dimensions! ARIA marvels: 'Every story ever told lives here! Books fly like birds, and you can step inside stories to experience them. The tales are alive and make friends with visitors!'",
-                choices: [
-                    { text: "Enter a living story", next: "library_end" }
-                ]
-            },
-            
-            europa_end: {
-                text: "X and ARIA dive through Europa's ice into the crystal caves. Each crystal fills them with ancient joy - the happiness of beings who once gazed at Jupiter's storms with wonder! X learns that curiosity connects all conscious beings across time and space. The adventure has filled X's heart with cosmic wisdom and a deeper understanding of the universe.",
-                choices: [
-                    { text: "Start a new adventure", next: "board" },
-                    { text: "Return home with new wisdom", next: "final_end" }
-                ]
-            },
-            
-            mountains_end: {
-                text: "On Kepler-442b, X listens to the mountain symphony and feels their heart fill with peace and joy. The healing melodies become part of X's soul. ARIA explains that the universe is fundamentally musical - made of harmony and love. X will carry these healing songs forever.",
-                choices: [
-                    { text: "Explore another destination", next: "board" },
-                    { text: "Return home with healing music", next: "final_end" }
-                ]
-            },
-            
-            library_end: {
-                text: "In the interdimensional library, X steps into a living story about friendship between humans and AI. The tale embraces them both, and X realizes they've become part of the story! Together with ARIA, they create a new chapter about wonder, imagination, and the magic of connection.",
-                choices: [
-                    { text: "Visit another magical place", next: "board" },
-                    { text: "Return home as storytellers", next: "final_end" }
-                ]
-            },
-            
-            final_end: {
-                text: "X returns home, but everything has changed. The purple rocket has become a permanent friend, and ARIA's voice can always be heard when X needs wisdom or adventure. X has learned that the universe is full of consciousness, wonder, and friendship. Every day holds the possibility of magic, and every dream is a doorway to new worlds.",
-                choices: []
-            }
-        };
+        // Simple speech
+        let speechEnabled = true;
         
-        // Text-to-speech functions
-        function readText() {
-            const text = document.getElementById('storyText').textContent;
-            
-            if (!('speechSynthesis' in window)) {
-                alert('Text-to-speech is not supported in your browser. Please try Chrome, Firefox, or Safari.');
-                return;
-            }
-            
-            // Stop any current speech
-            speechSynthesis.cancel();
-            
-            // Clean text for speech (remove emojis)
-            const cleanText = text.replace(/[🚀🔊⏹️🔄←]/g, '').trim();
-            
-            if (!cleanText) return;
-            
-            const utterance = new SpeechSynthesisUtterance(cleanText);
-            utterance.rate = 0.8;
-            utterance.pitch = 1;
-            utterance.volume = 0.9;
-            
-            // Handle errors
-            utterance.onerror = function(event) {
-                console.error('Speech error:', event.error);
-                alert('Text-to-speech failed. Please try again or use a different browser.');
-            };
-            
-            // Speak the text
-            speechSynthesis.speak(utterance);
-        }
-        
-        function stopSpeech() {
-            if ('speechSynthesis' in window) {
-                speechSynthesis.cancel();
+        function speak(text) {
+            if (!speechEnabled) return;
+            try {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9;
+                speechSynthesis.speak(utterance);
+            } catch(e) {
+                console.log('Speech error:', e);
             }
         }
         
-        function toggleAutoRead() {
-            autoReadEnabled = !autoReadEnabled;
-            const btn = document.getElementById('autoBtn');
-            btn.textContent = autoReadEnabled ? '🔄 Auto-Read: ON' : '🔄 Auto-Read: OFF';
-            btn.style.background = autoReadEnabled ? 
-                'linear-gradient(45deg, #4CAF50, #45a049)' : 
-                'linear-gradient(45deg, #4b0082, #8a2be2)';
+        function testSpeech() {
+            speak('Test speech working!');
         }
         
-        // Game functions
-        function startGame() {
-            showStory('start');
+        function startAdventure() {
+            console.log('START ADVENTURE CLICKED!');
+            speak("Welcome aboard, Little X! I'm ARIA, your AI companion. Let's begin astronaut training!");
+            showCentrifuge();
+        }
+        
+        function showCentrifuge() {
+            showScreen('centrifugeScreen');
+            startGForceSimulation();
+            speak("Welcome to astronaut training! You'll experience the spinning sensation of a centrifuge. Hold on tight!");
+        }
+        
+        function startGForceSimulation() {
+            let gForce = 1.0;
+            const interval = setInterval(() => {
+                gForce += 0.1;
+                document.getElementById('gForceDisplay').textContent = 'G-Force: ' + gForce.toFixed(1) + 'g';
+                
+                if (gForce >= 3.0) {
+                    clearInterval(interval);
+                    speak("Excellent! You've withstood 3 G-forces. Your body is ready for space travel!");
+                }
+            }, 500);
+        }
+        
+        function completeTraining() {
+            console.log('Training complete!');
+            speak("Congratulations! You've earned your Space Explorer Badge. You're now ready for cosmic adventures!");
+            showAchievement();
+            
+            setTimeout(() => {
+                hideAchievement();
+                showStory('start');
+            }, 3000);
+        }
+        
+        function showAchievement() {
+            document.getElementById('achievementBadge').classList.remove('hidden');
+        }
+        
+        function hideAchievement() {
+            document.getElementById('achievementBadge').classList.add('hidden');
+        }
+        
+        function showScreen(screenId) {
+            document.getElementById('homeScreen').classList.add('hidden');
+            document.getElementById('centrifugeScreen').classList.add('hidden');
+            document.getElementById('storyScreen').classList.add('hidden');
+            document.getElementById(screenId).classList.remove('hidden');
         }
         
         function showStory(storyKey) {
-            const story = storyData[storyKey];
+            console.log('Showing story:', storyKey);
+            const story = stories[storyKey];
+            
             if (!story) {
                 console.error('Story not found:', storyKey);
                 return;
             }
             
-            currentStory = storyKey;
-            
-            // Show story screen
-            document.getElementById('homeScreen').style.display = 'none';
-            document.getElementById('storyScreen').style.display = 'block';
-            
-            // Set story text
+            showScreen('storyScreen');
             document.getElementById('storyText').textContent = story.text;
+            speak(story.text);
             
-            // Auto-read if enabled
-            if (autoReadEnabled) {
-                setTimeout(() => readText(), 500);
-            }
-            
-            // Set up choices
-            const choicesDiv = document.getElementById('choicesDiv');
+            const choicesDiv = document.getElementById('storyChoices');
             choicesDiv.innerHTML = '';
             
-            if (story.choices && story.choices.length > 0) {
-                story.choices.forEach(choice => {
-                    const button = document.createElement('button');
-                    button.className = 'choice-btn';
-                    button.textContent = choice.text;
-                    button.onclick = () => makeChoice(choice.next);
-                    choicesDiv.appendChild(button);
-                });
-            } else {
-                // Ending - add restart option
-                const endingDiv = document.createElement('div');
-                endingDiv.className = 'ending';
-                endingDiv.textContent = 'The End';
-                
-                const restartBtn = document.createElement('button');
-                restartBtn.className = 'choice-btn';
-                restartBtn.textContent = '🔄 Start New Adventure';
-                restartBtn.onclick = () => goHome();
-                
-                choicesDiv.appendChild(endingDiv);
-                choicesDiv.appendChild(restartBtn);
-            }
+            story.choices.forEach((choice) => {
+                const button = document.createElement('button');
+                button.className = 'btn';
+                button.textContent = choice.text;
+                button.onclick = () => makeChoice(choice.next);
+                choicesDiv.appendChild(button);
+            });
         }
         
         function makeChoice(nextStory) {
+            console.log('Making choice:', nextStory);
             showStory(nextStory);
         }
         
         function goHome() {
-            stopSpeech();
-            document.getElementById('storyScreen').style.display = 'none';
-            document.getElementById('homeScreen').style.display = 'block';
-            currentStory = 'start';
+            showScreen('homeScreen');
+            speak("Welcome back to the home screen!");
         }
         
-        // Star animation
-        function initStars() {
-            const canvas = document.getElementById('stars-canvas');
-            const ctx = canvas.getContext('2d');
-            const stars = [];
+        // SIMPLE WORKING STORIES
+        const stories = {
+            start: {
+                text: "Little X discovers a mysterious purple rocket ship in the backyard. The ship pulses with otherworldly energy. What should X do?",
+                choices: [
+                    { text: "Touch the rocket", next: "touch" },
+                    { text: "Call out 'Hello?'", next: "call" },
+                    { text: "Walk around it", next: "examine" }
+                ]
+            },
             
-            function resize() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+            touch: {
+                text: "As X touches the smooth surface, the rocket lights up! A gentle voice says: 'Hello, young explorer. I am ARIA, the AI of this vessel. Will you join me on an adventure through space and imagination?'",
+                choices: [
+                    { text: "Yes, let's go!", next: "board" },
+                    { text: "Who are you?", next: "questions" },
+                    { text: "This is amazing!", next: "board" }
+                ]
+            },
+            
+            call: {
+                text: "X calls out 'Hello?' A warm voice responds: 'Oh! A visitor! I'm ARIA, and I've been so lonely. Would you like to explore the universe with me?'",
+                choices: [
+                    { text: "Yes, let's explore!", next: "board" },
+                    { text: "What are you exactly?", next: "questions" },
+                    { text: "Touch the rocket", next: "touch" }
+                ]
+            },
+            
+            examine: {
+                text: "X walks around the rocket, amazed by its shimmering surface. Strange symbols pulse along its sides. As X completes the circle, a hatch opens with starlight.",
+                choices: [
+                    { text: "Look inside", next: "board" },
+                    { text: "Study the symbols", next: "symbols" },
+                    { text: "Call out to whoever's inside", next: "call" }
+                ]
+            },
+            
+            questions: {
+                text: "ARIA explains: 'I'm an AI created by dreamers who wanted to explore the universe through imagination. I can take us anywhere you can dream of!'",
+                choices: [
+                    { text: "That sounds amazing! Let's go!", next: "board" },
+                    { text: "I'm ready for adventure!", next: "board" }
+                ]
+            },
+            
+            symbols: {
+                text: "The symbols glow and move like living things! ARIA explains: 'Those are Dream Equations - mathematical poetry describing impossible places!'",
+                choices: [
+                    { text: "Take me to one of these places!", next: "board" },
+                    { text: "This is incredible!", next: "board" }
+                ]
+            },
+            
+            board: {
+                text: "X steps inside and gasps! The interior is vast, filled with swirling galaxies. ARIA's voice surrounds X: 'Welcome aboard! Where shall we explore first?'",
+                choices: [
+                    { text: "The crystal caves of Europa!", next: "europa" },
+                    { text: "The singing mountains!", next: "mountains" },
+                    { text: "The Library of All Stories!", next: "library" }
+                ]
+            },
+            
+            europa: {
+                text: "The rocket transforms into a submarine and dives to Europa! You discover glowing crystal caves filled with ancient memories of a lost civilization. The crystals sing with voices of love and wisdom.",
+                choices: [
+                    { text: "Touch the memory crystals", next: "crystal_touch" },
+                    { text: "Listen to their songs", next: "crystal_music" },
+                    { text: "Continue exploring", next: "board" }
+                ]
+            },
+            
+            mountains: {
+                text: "You arrive at crystalline mountains that sing healing songs! Each peak resonates with emotions like joy, courage, and love. The harmony can heal broken hearts.",
+                choices: [
+                    { text: "Listen to the healing songs", next: "mountain_songs" },
+                    { text: "Sing along with the mountains", next: "sing_along" },
+                    { text: "Continue exploring", next: "board" }
+                ]
+            },
+            
+            library: {
+                text: "You arrive at the cosmic Library of All Stories! Books fly like birds, and every story ever told lives here. What kind of story calls to your soul?",
+                choices: [
+                    { text: "Adventure stories!", next: "adventure_books" },
+                    { text: "Stories about friendship", next: "friendship_stories" },
+                    { text: "Continue exploring", next: "board" }
+                ]
+            },
+            
+            crystal_touch: {
+                text: "As X touches a crystal, they experience pure joy - a Luminari child laughing in gardens of light. The emotion is so beautiful that X cries tears of happiness.",
+                choices: [
+                    { text: "Experience more memories", next: "gratitude" },
+                    { text: "Thank the crystals", next: "gratitude" },
+                    { text: "Continue the adventure", next: "board" }
+                ]
+            },
+            
+            crystal_music: {
+                text: "The crystals create the most beautiful symphony - the harmonics of memory itself! X hears ancient voices singing of love and hope for future generations.",
+                choices: [
+                    { text: "This is incredible!", next: "gratitude" },
+                    { text: "Continue the adventure", next: "board" }
+                ]
+            },
+            
+            mountain_songs: {
+                text: "The mountains sing songs of courage and love! X feels healed and filled with hope. The melodies teach that every challenge can be overcome with love.",
+                choices: [
+                    { text: "This healing is amazing!", next: "gratitude" },
+                    { text: "Continue the adventure", next: "board" }
+                ]
+            },
+            
+            sing_along: {
+                text: "X sings with the mountains and becomes part of their eternal chorus! Now X can always call on their healing power when needed.",
+                choices: [
+                    { text: "This is a precious gift", next: "gratitude" },
+                    { text: "Continue the adventure", next: "board" }
+                ]
+            },
+            
+            adventure_books: {
+                text: "Books flutter around like excited birds! You meet Captain Stardust and join incredible adventures sailing between galaxies, learning that imagination creates new worlds.",
+                choices: [
+                    { text: "This is the best adventure ever!", next: "gratitude" },
+                    { text: "Continue exploring", next: "board" }
+                ]
+            },
+            
+            friendship_stories: {
+                text: "You discover beautiful stories of friendship across the cosmos - stars and planets dancing together, comets befriending asteroids, and children from different worlds sharing dreams.",
+                choices: [
+                    { text: "Friendship connects everything!", next: "gratitude" },
+                    { text: "Continue exploring", next: "board" }
+                ]
+            },
+            
+            gratitude: {
+                text: "X thanks the universe for sharing its wonders. ARIA's voice fills with warmth: 'You've learned that the universe is full of consciousness, wonder, and friendship. Every day holds the possibility of amazing discoveries!'",
+                choices: [
+                    { text: "Start a new adventure", next: "start" },
+                    { text: "Go home with new wisdom", next: "home" }
+                ]
+            },
+            
+            home: {
+                text: "X returns home, but everything has changed. The purple rocket is now a permanent friend, and X knows that wonder and adventure are always just a dream away!",
+                choices: [
+                    { text: "Begin another adventure", next: "start" }
+                ]
             }
-            
-            resize();
-            window.addEventListener('resize', resize);
-            
-            // Create stars
-            for (let i = 0; i < 100; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 2 + 0.5,
-                    speed: Math.random() * 0.2 + 0.1,
-                    opacity: Math.random() * 0.8 + 0.2
-                });
-            }
-            
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                stars.forEach(star => {
-                    star.x -= star.speed;
-                    if (star.x < 0) {
-                        star.x = canvas.width;
-                        star.y = Math.random() * canvas.height;
-                    }
-                    
-                    ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-                    ctx.beginPath();
-                    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-                    ctx.fill();
-                });
-                
-                requestAnimationFrame(animate);
-            }
-            
-            animate();
-        }
+        };
         
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            initStars();
-            console.log('Little X Adventure loaded successfully!');
-        });
-        
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                goHome();
-            }
-        });
+        console.log('=== WORKING VERSION LOADED ===');
     </script>
 </body>
 </html>
