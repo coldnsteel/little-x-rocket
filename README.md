@@ -1,6 +1,6 @@
 # Little X's Cosmic Adventure & Composer 🚀🎵
 
-**Little X's Cosmic Adventure & Composer** is a unified, kid-friendly web app where children (5-12) explore the universe with ARIA and compose Dino Symphonies with Raaarrr, a rainbow T-Rex. Built with free tools and supported by donations - no paywalls, just pure cosmic wonder! ψΩ§∞
+**Little X's Cosmic Adventure & Composer** is a unified, child-friendly web app where children (5-12) explore the universe with ARIA and compose Dino Symphonies with Raaarrr, a rainbow T-Rex. Built with free tools and supported by donations - no paywalls, just pure cosmic wonder! ψΩ§∞
 
 ## 🌟 Features
 
