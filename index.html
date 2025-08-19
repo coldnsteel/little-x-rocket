@@ -210,8 +210,15 @@
                 AI is a tool, not a god - we create with wonder! ✨
             </p>
             <p style="margin: 20px 0;">
-                <em>"Where AI comes alive through play and music!" 🎵</em>
+                <em>"Where AI comes alive through play and music!"</em> 🎵
             </p>
+            
+            <div style="margin: 20px 0;">
+                <button class="btn" onclick="generateSerial()" style="font-size: 18px; padding: 15px 25px;">
+                    🛡️ Get Your Fortress Pass!
+                </button>
+            </div>
+            
             <a href="https://paypal.me/yourpaypallink" class="donate-btn">💝 Support Our Mission</a>
             <p style="font-size: 14px; margin-top: 10px;">
                 100% free to play • Donations keep us independent • Built by coldnsteel
@@ -381,6 +388,19 @@
 
         function saveForever() {
             alert('💾 Raaarrr\'s cosmic creation saved to the eternal memory banks! ✨');
+        }
+
+        // NEW FORTRESS PASS GENERATOR
+        function generateSerial() {
+            const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let random = '';
+            for (let i = 0; i < 4; i++) {
+                random += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            const serial = `FORTRESS-${date}-${random}`;
+            alert(`🛡️ Your Fortress Pass: ${serial}\n\nShare this adventure with other children! ⭐\n\nψΩ§∞ Built with love for ethical AI!`);
+            console.log(`Generated Fortress Pass: ${serial}`);
         }
 
         // Keyboard shortcut for quick notes
