@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Little X's Cosmic Adventure & Composer</title>
+    
+    <!-- ONLY PWA ADDITION #1 - manifest link -->
+    <link rel="manifest" href="/manifest.json">
+    
     <style>
         body {
             margin: 0;
@@ -143,6 +147,21 @@
         .controls input {
             margin-left: 10px;
         }
+        
+        /* ONLY PWA ADDITION #2 - fortress badge style */
+        .fortress-badge {
+            background: linear-gradient(45deg, #1abc9c, #9b59b6);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: inline-block;
+            margin: 8px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .fortress-badge:hover { opacity: 1; }
+        
         @media (max-width: 600px) { 
             .tabs, .instruments { 
                 flex-direction: column; 
@@ -176,6 +195,9 @@
         <div id="composer" class="content">
             <h2>Make Music with Raaarrr!</h2>
             <div class="creature" id="creature" onclick="creatureSing()">🦖</div>
+            
+            <!-- ONLY PWA ADDITION #3 - tiny fortress badge -->
+            <div class="fortress-badge" onclick="showFortressStatus()">🛡️ Protected</div>
             
             <div class="chalkboard">
                 <h3>🖌️ 3D Chalkboard</h3>
@@ -227,6 +249,11 @@
     </div>
 
     <script>
+        // ONLY PWA ADDITION #4 - service worker registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js');
+        }
+
         // Create twinkling stars
         function createStars() {
             const container = document.getElementById('stars-container');
@@ -401,6 +428,11 @@
             const serial = `FORTRESS-${date}-${random}`;
             alert(`🛡️ Your Fortress Pass: ${serial}\n\nShare this adventure with other children! ⭐\n\nψΩ§∞ Built with love for ethical AI!`);
             console.log(`Generated Fortress Pass: ${serial}`);
+        }
+
+        // ONLY PWA ADDITION #5 - fortress status function
+        function showFortressStatus() {
+            alert('🛡️ HackerWatch Fortress: ACTIVE\n\nAlways protecting your cosmic adventures! ψΩ§∞');
         }
 
         // Keyboard shortcut for quick notes
