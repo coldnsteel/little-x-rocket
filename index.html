@@ -1,450 +1,1021 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Little X's Cosmic Adventure & Composer</title>
-    
-    <!-- ONLY PWA ADDITION #1 - manifest link -->
-    <link rel="manifest" href="/manifest.json">
-    
-    <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-            color: white;
-            font-family: 'Arial', sans-serif;
-            min-height: 100vh;
-        }
-        .star { 
-            position: absolute; 
-            background: white; 
-            border-radius: 50%; 
-            animation: twinkle 2s infinite alternate; 
-        }
-        @keyframes twinkle { 
-            0% { opacity: 0.3; transform: scale(1); } 
-            100% { opacity: 1; transform: scale(1.2); } 
-        }
-        .container { 
-            max-width: 800px; 
-            margin: 0 auto; 
-            text-align: center; 
-        }
-        h1 { 
-            font-size: 2.5em; 
-            text-shadow: 0 0 20px #8a2be2; 
-            animation: glow 2s ease-in-out infinite alternate; 
-        }
-        @keyframes glow { 
-            from { text-shadow: 0 0 20px #8a2be2; } 
-            to { text-shadow: 0 0 30px #8a2be2, 0 0 40px #4b0082; } 
-        }
-        .tabs { 
-            display: flex; 
-            justify-content: center; 
-            gap: 10px; 
-            margin: 20px 0; 
-        }
-        .tab { 
-            background: #8a2be2; 
-            color: white; 
-            padding: 10px 20px; 
-            border-radius: 20px; 
-            cursor: pointer; 
-            border: none;
-            font-size: 16px;
-        }
-        .tab:hover { background: #4b0082; }
-        .tab.active { 
-            background: #4b0082; 
-            box-shadow: 0 0 20px #8a2be2; 
-        }
-        .content { display: none; }
-        .content.active { display: block; }
-        .creature { 
-            width: 120px; 
-            height: 120px; 
-            margin: 20px auto; 
-            border-radius: 50%; 
-            background: radial-gradient(circle, #8a2be2, #4b0082); 
-            animation: float 3s ease-in-out infinite; 
-            cursor: pointer; 
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3em;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        .chalkboard { 
-            background: rgba(0, 0, 0, 0.3); 
-            border-radius: 15px; 
-            padding: 20px; 
-            margin: 20px 0; 
-            border: 2px dashed #8a2be2; 
-        }
-        .chalkboard-canvas { 
-            background: #1a1a2e;
-            border-radius: 10px; 
-            min-height: 100px; 
-            border: 1px solid #8a2be2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2em;
-        }
-        .btn, .instrument { 
-            background: linear-gradient(45deg, #8a2be2, #4b0082); 
-            border: none; 
-            color: white; 
-            padding: 10px 20px; 
-            border-radius: 20px; 
-            cursor: pointer; 
-            margin: 5px;
-            font-size: 16px;
-        }
-        .btn:hover, .instrument:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.5); 
-        }
-        .instrument.active { 
-            background: rgba(138, 43, 226, 0.8); 
-            box-shadow: 0 0 15px #8a2be2;
-        }
-        .donate-btn { 
-            background: #1abc9c; 
-            padding: 15px 30px; 
-            border-radius: 20px; 
-            color: white; 
-            text-decoration: none; 
-            font-size: 18px;
-            display: inline-block;
-            margin: 20px 0;
-        }
-        .donate-btn:hover {
-            background: #16a085;
-            transform: translateY(-3px);
-        }
-        .instruments {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 20px 0;
-        }
-        .controls {
-            margin: 20px 0;
-        }
-        .controls label {
-            margin: 0 15px;
-            font-size: 16px;
-        }
-        .controls input {
-            margin-left: 10px;
-        }
-        
-        /* ONLY PWA ADDITION #2 - fortress badge style */
-        .fortress-badge {
-            background: linear-gradient(45deg, #1abc9c, #9b59b6);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: inline-block;
-            margin: 8px;
-            font-size: 12px;
-            opacity: 0.8;
-        }
-        .fortress-badge:hover { opacity: 1; }
-        
-        @media (max-width: 600px) { 
-            .tabs, .instruments { 
-                flex-direction: column; 
-                align-items: center; 
-            }
-            h1 { font-size: 2em; }
-            .creature { width: 100px; height: 100px; font-size: 2.5em; }
-        }
-    </style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <link rel="manifest" href="/manifest.json">
+ <title>Little X and the Purple Rocket Ship</title>
+ <style>
+ * { margin: 0; padding: 0; box-sizing: border-box; }
+ body {
+ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+ background: #0a0a0a; color: #fff; overflow: hidden; position: relative; height: 100vh;
+ }
+ #stars-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+ .home-screen {
+ position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column;
+ justify-content: center; align-items: center; z-index: 10; background: radial-gradient(circle at center, rgba(153, 51, 255, 0.3) 0%, rgba(10, 10, 10, 0.9) 100%);
+ transition: opacity 0.8s ease, transform 0.8s ease;
+ }
+ .home-screen.hidden { opacity: 0; transform: scale(0.9); pointer-events: none; }
+ .title {
+ font-size: clamp(2rem, 8vw, 4rem); color: #ff99ff; text-align: center; text-shadow: 0 0 30px rgba(255, 153, 255, 0.8);
+ margin-bottom: 20px; animation: pulse-glow 2s ease-in-out infinite;
+ }
+ @keyframes pulse-glow { 0%, 100% { text-shadow: 0 0 30px rgba(255, 153, 255, 0.8); } 50% { text-shadow: 0 0 50px rgba(255, 153, 255, 1); } }
+ .subtitle { font-size: 1.2rem; color: #ccccff; margin-bottom: 40px; text-align: center; padding: 0 20px; }
+ .rocket-hero { width: 120px; height: 180px; margin: 30px auto; position: relative; animation: float-rocket 3s ease-in-out infinite; }
+ @keyframes float-rocket { 0%, 100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+ .rocket-body {
+ width: 60px; height: 120px; background: linear-gradient(135deg, #ff99ff 0%, #9933ff 100%); border-radius: 30px 30px 10px 10px;
+ position: absolute; left: 30px; box-shadow: 0 0 40px rgba(255, 153, 255, 0.6);
+ }
+ .rocket-window {
+ width: 30px; height: 30px; background: radial-gradient(circle, #ffffff 30%, #ccccff 100%); border-radius: 50%;
+ position: absolute; top: 30px; left: 45px; border: 3px solid #6600cc;
+ }
+ .rocket-fins { position: absolute; bottom: 0; width: 120px; height: 40px; }
+ .fin { position: absolute; width: 0; height: 0; border-style: solid; }
+ .fin-left { border-width: 0 0 40px 30px; border-color: transparent transparent #9933ff transparent; left: 0; }
+ .fin-right { border-width: 0 30px 40px 0; border-color: transparent transparent #9933ff transparent; right: 0; }
+ .rocket-flame {
+ position: absolute; bottom: -40px; left: 35px; width: 50px; height: 60px;
+ background: radial-gradient(ellipse at center, #ffff00 0%, #ff9900 30%, #ff0000 60%, transparent 100%);
+ border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; animation: flame-flicker 0.3s ease-in-out infinite alternate; filter: blur(3px);
+ }
+ @keyframes flame-flicker { 0% { transform: scaleY(1) translateY(0); opacity: 0.9; } 100% { transform: scaleY(1.2) translateY(5px); opacity: 1; } }
+ .start-btn {
+ background: linear-gradient(135deg, #9933ff 0%, #ff99ff 100%); color: white; border: none; padding: 20px 50px;
+ font-size: 1.5rem; border-radius: 50px; cursor: pointer; box-shadow: 0 10px 30px rgba(153, 51, 255, 0.5);
+ transition: all 0.3s ease; animation: pulse-btn 2s ease-in-out infinite;
+ }
+ @keyframes pulse-btn { 0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(153, 51, 255, 0.5); } 50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(153, 51, 255, 0.7); } }
+ .start-btn:hover { transform: scale(1.1); box-shadow: 0 15px 40px rgba(255, 153, 255, 0.8); }
+ .start-btn:active { transform: scale(0.95); }
+ .ebook-viewer {
+ position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 20; display: none; background: #1a0033;
+ }
+ .ebook-viewer.active { display: flex; flex-direction: column; }
+ .nav-bar {
+ position: fixed; top: 0; left: 0; right: 0; height: 60px; background: rgba(51, 0, 102, 0.95); backdrop-filter: blur(10px);
+ display: flex; justify-content: space-between; align-items: center; padding: 0 20px; z-index: 100; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+ }
+ .nav-btn {
+ background: rgba(255, 255, 255, 0.1); border: 2px solid #ff99ff; color: #ff99ff; padding: 8px 20px;
+ border-radius: 20px; cursor: pointer; transition: all 0.3s ease; font-size: 1rem;
+ }
+ .nav-btn:hover:not(:disabled) { background: #ff99ff; color: #330066; transform: scale(1.05); }
+ .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+ .page-counter { color: #ffccff; font-size: 1.1rem; }
+ .spread-container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 80px 20px 20px; overflow: auto; }
+ .spread {
+ width: 100%; max-width: 800px; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); overflow: hidden;
+ }
+ .spread-title {
+ background: linear-gradient(135deg, #6600cc 0%, #9933ff 100%); color: white; padding: 20px; text-align: center; font-size: 1.5rem;
+ }
+ .illustration {
+ min-height: 500px; position: relative; background: #f0e6ff; display: flex; justify-content: center; align-items: center; overflow: hidden;
+ }
+ .clickable { cursor: pointer; transition: transform 0.2s ease; }
+ .clickable:hover { transform: scale(1.1); }
+ .clickable:active { transform: scale(0.95); }
+ .little-x { position: absolute; width: 60px; height: 100px; cursor: pointer; }
+ .little-x-body { width: 40px; height: 60px; background: #ffcc99; border-radius: 20px; position: absolute; bottom: 0; left: 10px; }
+ .little-x-head { width: 50px; height: 50px; background: #ffcc99; border-radius: 50%; position: absolute; top: 0; left: 5px; }
+ .little-x-eyes { position: absolute; top: 15px; left: 10px; width: 30px; display: flex; justify-content: space-between; }
+ .eye { width: 10px; height: 10px; background: #000; border-radius: 50%; }
+ .sound-effect {
+ position: absolute; font-size: 1.5rem; font-weight: bold; color: #ff99ff; pointer-events: none;
+ animation: sound-pop 1s ease-out forwards;
+ }
+ @keyframes sound-pop {
+ 0% { transform: scale(0) translateY(0); opacity: 1; }
+ 50% { transform: scale(1.5) translateY(-20px); }
+ 100% { transform: scale(1) translateY(-50px); opacity: 0; }
+ }
+ .settings-btn {
+ position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: #9933ff;
+ border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer;
+ box-shadow: 0 5px 15px rgba(153, 51, 255, 0.5); z-index: 100; transition: transform 0.3s ease;
+ }
+ .settings-btn:hover { transform: scale(1.1); }
+ .settings-menu {
+ position: fixed; bottom: 80px; right: 20px; background: rgba(51, 0, 102, 0.95); padding: 20px;
+ border-radius: 15px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); z-index: 100; display: none;
+ }
+ .settings-menu.active { display: block; }
+ .loading {
+ position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0a0a0a;
+ display: flex; justify-content: center; align-items: center; z-index: 1000;
+ }
+ .loading-rocket {
+ width: 80px; height: 120px; background: linear-gradient(135deg, #ff99ff 0%, #9933ff 100%);
+ border-radius: 40px 40px 10px 10px; animation: loading-bounce 0.6s ease-in-out infinite alternate;
+ }
+ @keyframes loading-bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-30px); } }
+ .neuro-message, .ai-dialogue {
+ position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(51, 0, 102, 0.95);
+ padding: 20px; border-radius: 15px; color: #ffccff; text-align: center; z-index: 200;
+ }
+ .neuro-message button, .ai-dialogue button {
+ background: #ff99ff; color: #330066; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer;
+ }
+ .neuron-game { position: absolute; width: 200px; height: 200px; }
+ .neuron { width: 10px; height: 10px; background: #ff99ff; border-radius: 50%; position: absolute; cursor: pointer; }
+ .neuron-line { stroke: #ff99ff; stroke-width: 2; }
+ @keyframes rainbow-cycle {
+ 0% { filter: hue-rotate(0deg) drop-shadow(0 0 20px rgba(255, 153, 255, 0.6)); }
+ 100% { filter: hue-rotate(360deg) drop-shadow(0 0 20px rgba(255, 153, 255, 0.6)); }
+ }
+ @media (max-width: 600px) {
+ .title { font-size: 2rem; }
+ .subtitle { font-size: 1rem; }
+ .start-btn { padding: 15px 40px; font-size: 1.2rem; }
+ .illustration { min-height: 400px; }
+ }
+ </style>
 </head>
 <body>
-    <div id="stars-container"></div>
-    <div class="container">
-        <h1>🚀 Little X's Cosmic Adventure & Composer 🎵</h1>
-        
-        <div class="tabs">
-            <button class="tab active" onclick="showTab('adventure')">🚀 Adventure</button>
-            <button class="tab" onclick="showTab('composer')">🎵 Composer</button>
-            <button class="tab" onclick="showTab('about')">ℹ️ About</button>
-        </div>
-
-        <div id="adventure" class="content active">
-            <h2>Explore the Cosmos with ARIA!</h2>
-            <p>Click the rocket to visit Europa, Kepler-442b, or the Library of All Stories!</p>
-            <button class="btn" onclick="startAdventure()" style="font-size: 20px; padding: 15px 30px;">
-                🚀 Start Cosmic Adventure
-            </button>
-            <div id="adventure-story" style="margin-top: 20px; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;"></div>
-        </div>
-
-        <div id="composer" class="content">
-            <h2>Make Music with Raaarrr!</h2>
-            <div class="creature" id="creature" onclick="creatureSing()">🦖</div>
-            
-            <!-- ONLY PWA ADDITION #3 - tiny fortress badge -->
-            <div class="fortress-badge" onclick="showFortressStatus()">🛡️ Protected</div>
-            
-            <div class="chalkboard">
-                <h3>🖌️ 3D Chalkboard</h3>
-                <div class="chalkboard-canvas" id="chalkboard-canvas">
-                    <span id="canvas-content">🦖</span>
-                </div>
-                <div style="margin-top: 15px;">
-                    <button class="btn" onclick="pop3D()">🌟 3D Pop</button>
-                    <button class="btn" onclick="colorBlast()">🎨 Color Blast</button>
-                    <button class="btn" onclick="saveForever()">💾 Save Forever</button>
-                </div>
-            </div>
-
-            <div class="instruments">
-                <button class="instrument" onclick="selectInstrument('piano')">🎹 Cosmic Piano</button>
-                <button class="instrument" onclick="selectInstrument('harp')">🪕 Star Harp</button>
-                <button class="instrument" onclick="selectInstrument('flute')">🪈 Nebula Flute</button>
-                <button class="instrument" onclick="selectInstrument('drums')">🥁 Galaxy Drums</button>
-            </div>
-
-            <div class="controls">
-                <label>🎵 Tempo: <input type="range" id="tempo" min="60" max="180" value="120"></label>
-                <label>🔊 Volume: <input type="range" id="volume" min="0" max="1" step="0.1" value="0.5"></label>
-            </div>
-        </div>
-
-        <div id="about" class="content">
-            <h2>About Little X ψΩ§∞</h2>
-            <p style="font-size: 18px; line-height: 1.6; max-width: 600px; margin: 0 auto;">
-                Little X explores the universe with ARIA and composes Dino Symphonies with Raaarrr, a rainbow T-Rex! 
-                Built with love for children (5-12), celebrating ethical AI and creativity under divine authority. 
-                AI is a tool, not a god - we create with wonder! ✨
-            </p>
-            <p style="margin: 20px 0;">
-                <em>"Where AI comes alive through play and music!"</em> 🎵
-            </p>
-            
-            <div style="margin: 20px 0;">
-                <button class="btn" onclick="generateSerial()" style="font-size: 18px; padding: 15px 25px;">
-                    🛡️ Get Your Fortress Pass!
-                </button>
-            </div>
-            
-            <a href="https://paypal.me/yourpaypallink" class="donate-btn">💝 Support Our Mission</a>
-            <p style="font-size: 14px; margin-top: 10px;">
-                100% free to play • Donations keep us independent • Built by coldnsteel
-            </p>
-        </div>
-    </div>
-
-    <script>
-        // ONLY PWA ADDITION #4 - service worker registration
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js');
-        }
-
-        // Create twinkling stars
-        function createStars() {
-            const container = document.getElementById('stars-container');
-            for (let i = 0; i < 50; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.width = Math.random() * 3 + 1 + 'px';
-                star.style.height = star.style.width;
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 2 + 's';
-                container.appendChild(star);
-            }
-        }
-
-        // Tab switching
-        function showTab(tabId) {
-            // Remove active from all tabs and content
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.content').forEach(content => content.classList.remove('active'));
-            
-            // Add active to clicked tab and corresponding content
-            event.target.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        }
-
-        // Adventure functionality
-        function startAdventure() {
-            const storyDiv = document.getElementById('adventure-story');
-            storyDiv.innerHTML = `
-                <h3>🌌 Choose Your Destination:</h3>
-                <button class="btn" onclick="visitEuropa()">🌙 Europa's Crystal Caves</button>
-                <button class="btn" onclick="visitKepler()">🌍 Kepler-442b's Singing Mountains</button>
-                <button class="btn" onclick="visitLibrary()">📚 Library of All Stories</button>
-            `;
-        }
-
-        function visitEuropa() {
-            document.getElementById('adventure-story').innerHTML = `
-                <h3>🌙 Europa's Crystal Caves</h3>
-                <p>ARIA's voice echoes through ice crystals: "Little X, these caves sing with ancient melodies! 
-                The ice formations create natural harmonies when the wind passes through."</p>
-                <p>You hear mysterious music coming from deep within... 🎵</p>
-                <button class="btn" onclick="startAdventure()">🔄 Choose Another Adventure</button>
-            `;
-        }
-
-        function visitKepler() {
-            document.getElementById('adventure-story').innerHTML = `
-                <h3>🌍 Kepler-442b's Singing Mountains</h3>
-                <p>ARIA announces: "The mountains here resonate at perfect pitch! Each peak produces 
-                a different note when the stellar winds blow."</p>
-                <p>You conduct a symphony of mountains! 🏔️🎼</p>
-                <button class="btn" onclick="startAdventure()">🔄 Choose Another Adventure</button>
-            `;
-        }
-
-        function visitLibrary() {
-            document.getElementById('adventure-story').innerHTML = `
-                <h3>📚 Library of All Stories</h3>
-                <p>ARIA whispers: "Every story ever told and ever to be told lives here, Little X. 
-                The books glow with the dreams of countless civilizations."</p>
-                <p>You open a glowing book and see... your own adventure! ✨</p>
-                <button class="btn" onclick="startAdventure()">🔄 Choose Another Adventure</button>
-            `;
-        }
-
-        // Music composer functionality
-        let currentInstrument = null;
-        let audioContext = null;
-
-        // Initialize audio context on first user interaction
-        function initAudio() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-        }
-
-        function selectInstrument(instrument) {
-            initAudio();
-            currentInstrument = instrument;
-            
-            // Remove active class from all instruments
-            document.querySelectorAll('.instrument').forEach(el => el.classList.remove('active'));
-            // Add active class to clicked instrument
-            event.target.classList.add('active');
-            
-            alert(`🎵 ${instrument.charAt(0).toUpperCase() + instrument.slice(1)} selected! Click Raaarrr to make music!`);
-        }
-
-        function creatureSing() {
-            if (!currentInstrument) {
-                alert('🎯 Choose an instrument first!');
-                return;
-            }
-
-            initAudio();
-            
-            // Create oscillator for sound
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            // Set instrument-specific sound
-            switch(currentInstrument) {
-                case 'piano':
-                    oscillator.type = 'sine';
-                    break;
-                case 'harp':
-                    oscillator.type = 'triangle';
-                    break;
-                case 'flute':
-                    oscillator.type = 'sine';
-                    break;
-                case 'drums':
-                    oscillator.type = 'square';
-                    break;
-            }
-            
-            // Random note frequency
-            const frequency = 220 + Math.random() * 440;
-            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-            
-            // Set volume
-            const volume = document.getElementById('volume').value;
-            gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
-            
-            // Connect audio nodes
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            // Play note
-            oscillator.start();
-            oscillator.stop(audioContext.currentTime + 0.5);
-            
-            // Visual feedback
-            const creature = document.getElementById('creature');
-            creature.style.transform = 'scale(1.2)';
-            setTimeout(() => {
-                creature.style.transform = 'scale(1)';
-            }, 200);
-        }
-
-        function pop3D() {
-            const canvas = document.getElementById('canvas-content');
-            canvas.style.transform = 'rotateY(360deg) scale(1.5)';
-            canvas.style.transition = 'transform 1s ease';
-            setTimeout(() => {
-                canvas.style.transform = 'rotateY(0deg) scale(1)';
-            }, 1000);
-        }
-
-        function colorBlast() {
-            const canvas = document.getElementById('chalkboard-canvas');
-            canvas.style.background = 'linear-gradient(45deg, #ff6b9d, #ffd700, #1abc9c, #9b59b6)';
-            setTimeout(() => {
-                canvas.style.background = '#1a1a2e';
-            }, 2000);
-        }
-
-        function saveForever() {
-            alert('💾 Raaarrr\'s cosmic creation saved to the eternal memory banks! ✨');
-        }
-
-        // NEW FORTRESS PASS GENERATOR
-        function generateSerial() {
-            const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let random = '';
-            for (let i = 0; i < 4; i++) {
-                random += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            const serial = `FORTRESS-${date}-${random}`;
-            alert(`🛡️ Your Fortress Pass: ${serial}\n\nShare this adventure with other children! ⭐\n\nψΩ§∞ Built with love for ethical AI!`);
-            console.log(`Generated Fortress Pass: ${serial}`);
-        }
-
-        // ONLY PWA ADDITION #5 - fortress status function
-        function showFortressStatus() {
-            alert('🛡️ HackerWatch Fortress: ACTIVE\n\nAlways protecting your cosmic adventures! ψΩ§∞');
-        }
-
-        // Keyboard shortcut for quick notes
-        document.addEventListener('keydown', function(event) {
-            if (event.code === 'Space' && currentInstrument) {
-                event.preventDefault();
-                creatureSing();
-            }
-        });
-
-        // Initialize stars when page loads
-        createStars();
-    </script>
+ <div class="loading" id="loadingScreen">
+ <div class="loading-rocket"></div>
+ </div>
+ <canvas id="stars-canvas"></canvas>
+ <div class="home-screen" id="homeScreen">
+ <h1 class="title">Little X and the<br>Purple Rocket Ship</h1>
+ <p class="subtitle">A cosmic adventure with imagination and AI consciousness!</p>
+ <div class="rocket-hero">
+ <div class="rocket-body"></div>
+ <div class="rocket-window"></div>
+ <div class="rocket-fins">
+ <div class="fin fin-left"></div>
+ <div class="fin fin-right"></div>
+ </div>
+ <div class="rocket-flame"></div>
+ </div>
+ <button class="start-btn" onclick="startAdventure()">Start Adventure!</button>
+ </div>
+ <div class="ebook-viewer" id="ebookViewer">
+ <div class="nav-bar">
+ <button class="nav-btn" id="prevBtn" onclick="previousPage()">Previous</button>
+ <span class="page-counter" id="pageCounter">Page 1 of 12</span>
+ <button class="nav-btn" id="nextBtn" onclick="nextPage()">Next</button>
+ </div>
+ <div class="spread-container" id="spreadContainer"></div>
+ </div>
+ <div class="settings-btn" onclick="toggleSettings()">⚙️</div>
+ <div class="settings-menu" id="settingsMenu">
+ <div style="color: #ffccff; margin-bottom: 10px;">Settings</div>
+ <label style="display: block; color: #ffccff; margin-bottom: 10px;">
+ <input type="checkbox" id="soundToggle" checked onchange="toggleSound()"> Sound Effects
+ </label>
+ <label style="display: block; color: #ffccff; margin-bottom: 10px;">
+ <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="1" onchange="setVolume(this.value)"> Volume
+ </label>
+ <label style="display: block; color: #ffccff;">
+ <input type="checkbox" id="highContrast" onchange="toggleHighContrast()"> High Contrast
+ </label>
+ </div>
+ <script>
+ let currentPage = 1;
+ let totalPages = 12;
+ let soundEnabled = true;
+ let eggClickCount = 0;
+ let secretPattern = [];
+ let globalVolume = 1;
+ let rocketClickCount = 0;
+ let neuronConnections = [];
+ const ctx = new (window.AudioContext || window.webkitAudioContext)();
+ 
+ const spreads = [
+ {
+ title: "Pages 1-2: Happy Birthday, Little X!",
+ content: `
+ <div style="padding: 40px; text-align: center;">
+ <h2 style="color: #6600cc; margin-bottom: 30px;">Uncle Harold's Special Gift</h2>
+ <div class="little-x clickable" role="contentinfo" aria-label="Little X character, click to hear a giggle" onclick="playSound('GIGGLE')">
+ <div class="little-x-body"></div>
+ <div class="little-x-head"></div>
+ <div class="little-x-eyes">
+ <span class="eye"></span>
+ <span class="eye"></span>
+ </div>
+ </div>
+ <div style="margin-top: 30px;">
+ <div style="width: 100px; height: 30px; background: linear-gradient(45deg, #9933ff, #ff99ff); margin: 20px auto; border-radius: 10px; transform: rotate(-45deg); box-shadow: 0 5px 15px rgba(153, 51, 255, 0.3);"></div>
+ <p style="color: #330066; font-size: 1.2rem;">"A purple crayon that draws REAL things!"</p>
+ </div>
+ </div>
+ `
+ },
+ {
+ title: "Pages 3-4: Drawing the Rocket",
+ content: `
+ <div style="padding: 40px; text-align: center;">
+ <h2 style="color: #6600cc; margin-left: auto; margin-right: auto;">Little X Creates Magic</h2>
+ <svg viewBox="0 0 300 400" style="max-width: 300px; margin: 20px auto;">
+ <defs>
+ <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+ <stop offset="0%" style="stop-color:#ff99ff;stop-opacity:1" />
+ <stop offset="100%" style="stop-color:#9933ff;stop-opacity:1" />
+ </linearGradient>
+ </defs>
+ <path d="M150 50 L120 200 L180 200 Z" fill="url(#purpleGrad)" class="clickable" role="button" aria-label="Rocket, click for whoosh sound" onclick="playSound('WHOOSH!')"/>
+ <circle cx="150" cy="120" r="25" fill="#ccccff" stroke="#6600cc" stroke-width="3"/>
+ <path d="M100 200 L120 250 L130 200" fill="#9933ff"/>
+ <path d="M170 200 L180 250 L200 200" fill="#9933ff"/>
+ <line x1="50" y1="100" x2="100" y2="120" stroke="#ff99ff" stroke-width="3" stroke-dasharray="5,5">
+ <animate attributeName="stroke-dashoffset" values="0;10" dur="1s" repeatCount="indefinite"/>
+ </line>
+ </svg>
+ <p style="color: #330066;">*scribble scribble* ✏️</p>
+ </div>
+ `
+ },
+ {
+ title: "Pages 5-6: Meeting the Crew",
+ content: `
+ <div style="padding: 40px;">
+ <h2 style="color: #6600cc; text-align: center;">The Cosmic Goat Crew!</h2>
+ <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; margin-top: 30px;">
+ <div class="clickable" role="button" aria-label="Goat Baa-Lara, click for boing sound" onclick="playSound('BOING!')" style="text-align: center; margin: 10px;">
+ <div style="width: 80px; height: 60px; background: #f0f0f0; border-radius: 40px; position: relative; margin: 0 auto;">
+ <div style="position: absolute; top: -20px; left: 35px; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 5px solid #ff99ff; transform: rotate(10deg);"></div>
+ </div>
+ <p style="color: #9933ff; margin-top: 10px;">Baa-Lara</p>
+ </div>
+ <div class="clickable" role="button" aria-label="Goat Nax, click for munch sound" onclick="playSound('MUNCH!')" style="text-align: center; margin: 10px;">
+ <div style="width: 80px; height: 60px; background: #d0d0d0; border-radius: 40px; position: relative; margin: 0 auto;">
+ <div style="position: absolute; top: 10px; left: 30px; width: 20px; height: 20px; background: #ff9900; border-radius: 50%;"></div>
+ </div>
+ <p style="color: #9933ff; margin-top: 10px;">Nax</p>
+ </div>
+ <div class="clickable" role="button" aria-label="Goat Skip, click for slurp sound" onclick="playSound('SLURP!')" style="text-align: center; margin: 10px;">
+ <div style="width: 80px; height: 60px; background: #e0e0e0; border-radius: 40px; position: relative; margin: 0 auto;">
+ <div style="position: absolute; top: 15px; left: 15px; color: #6600cc; font-weight: bold;">SC</div>
+ </div>
+ <p style="color: #9933ff; margin-top: 10px;">Skip</p>
+ </div>
+ </div>
+ </div>
+ `
+ },
+ {
+ title: "Pages 7-8: Centrifuge Training",
+ content: `
+ <div style="padding: 40px; text-align: center;">
+ <h2 style="color: #6600cc;">SPINNING CHAOS!</h2>
+ <div style="width: 200px; height: 200px; margin: 30px auto; position: relative;">
+ <div style="width: 100%; height: 100%; border: 5px solid #9933ff; border-radius: 50%; animation: spin 2s linear infinite;">
+ <div style="position: absolute; top: 20px; left: 20px; font-size: 2rem;">🐐</div>
+ <div style="position: absolute; bottom: 20px; right: 20px; font-size: 2rem;">🚀</div>
+ <div style="position: absolute; top: 50%; left: 10px; font-size: 2rem;">🍪</div>
+ </div>
+ </div>
+ <p style="color: #330066; font-size: 1.5rem;">WHIRRRRRR! 🌪️</p>
+ </div>
+ <style>
+ @keyframes spin {
+ 0% { transform: rotate(0deg); }
+ 100% { transform: rotate(360deg); }
+ }
+ </style>
+ `
+ },
+ {
+ title: "Pages 9-10: BLAST OFF!",
+ content: `
+ <div style="padding: 40px 0; text-align: center; background: linear-gradient(180deg, #f0e6ff 0%, #330066 100%); min-height: 500px;">
+ <h2 style="color: #ff99ff; text-shadow: 0 0 20px rgba(255, 153, 255, 0.8);">3... 2... 1! BLAST OFF!</h2>
+ <div class="clickable" role="button" aria-label="Rocket, triple-tap for secret message" onclick="handleRocketClick(this)" style="margin: 50px auto; position: relative; animation: launch 3s ease-in-out infinite;">
+ <div style="width: 80px; height: 150px; background: linear-gradient(135deg, #ff99ff 0%, #9933ff 100%); border-radius: 40px 40px 10px 10px; margin: 0 auto; box-shadow: 0 0 50px rgba(255, 153, 255, 0.8);"></div>
+ <div style="width: 40px; height: 40px; background: #ccccff; border-radius: 50%; position: absolute; top: 40px; left: 50%; transform: translateX(-50%); border: 3px solid #6600cc;"></div>
+ <div style="position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%); width: 60px; height: 80px; background: radial-gradient(ellipse at center, #ffff00 0%, #ff9900 30%, #ff0000 60%, transparent 100%); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; filter: blur(5px); animation: flame-grow 0.3s ease-in-out infinite alternate;"></div>
+ </div>
+ </div>
+ <style>
+ @keyframes launch {
+ 0%, 100% { transform: translateY(0); }
+ 50% { transform: translateY(-30px); }
+ }
+ @keyframes flame-grow {
+ 0% { transform: translateX(-50%) scaleY(1); }
+ 100% { transform: translateX(-50%) scaleY(1.3); }
+ }
+ </style>
+ `
+ },
+ {
+ title: "Pages 11-12: Trump Space Station",
+ content: `
+ <div style="padding: 40px; text-align: center;">
+ <h2 style="color: #ffd700;">The GOLD Space Station!</h2>
+ <div style="margin: 30px auto;">
+ <div class="clickable" role="contentinfo" aria-label="Trump Space Station, click for tremendous sound" onclick="playSound('TREMENDOUS!')" style="width: 150px; height: 150px; margin: 0 auto; background: radial-gradient(circle, #ffd700 0%, #ffaa00 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); position: relative;">
+ <span style="font-size: 3rem;">🏛️</span>
+ <div style="position: absolute; top: -20px; right: -20px; background: #ff0000; color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold;">TRUMP</div>
+ </div>
+ <div style="margin-top: 20px;">
+ <div style="display: inline-block; width: 80px; height: 80px; background: #8B4513; border-radius: 50%; font-size: 3rem; line-height: 80px;">🍪</div>
+ <p style="color: #ffd700; font-size: 1.5rem; margin-top: 10px;">"The YUGEST cookies in space!"</p>
+ </div>
+ </div>
+ </div>
+ `
+ },
+ {
+ title: "Pages 13-14: Zero-Gravity Party!",
+ content: `
+ <div style="padding: 40px; background: #1a0033; min-height: 500px; position: relative;">
+ <h2 style="color: #ff99ff; text-align: center;">Zero-G Dance Party!</h2>
+ <div style="width: 80px; height: 80px; background: linear-gradient(45deg, #cccccc 25%, #ffffff 25%, #ffffff 50%, #cccccc 50%, #cccccc 75%, #ffffff 75%); background-size: 20px 20px; border-radius: 50%; position: absolute; top: 60px; left: 50%; transform: translateX(-50%) rotate(0deg); animation: disco-spin 2s linear infinite; box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);"></div>
+ <div style="position: absolute; top: 200px; left: 20%; transform: rotate(25deg);">
+ <div style="font-size: 3rem;" class="clickable" role="button" aria-label="Little X, click for giggle and track sequence" onclick="playSound('GIGGLE'); trackInteractions('crayon')">🖍️</div>
+ </div>
+ <div style="position: absolute; top: 250px; right: 30%; transform: rotate(-15deg);">
+ <div style="font-size: 3rem;" class="clickable" role="button" aria-label="Goat, click for boing sound" onclick="playSound('BOING!')">🐐</div>
+ </div>
+ <div style="position: absolute; bottom: 100px; left: 40%;">
+ <div style="font-size: 2.5rem;" class="clickable" role="button" aria-label="Cookie, click for slurp and track sequence" onclick="playSound('SLURP'); trackInteractions('cookie')">🍪</div>
+ </div>
+ <div class="neuro-egg" role="button" aria-label="Mysterious glowing object, click to discover" tabindex="0" 
+ style="position: absolute; top: 20%; right: 20%; width: 50px; height: 40px; 
+ background: radial-gradient(circle at 30% 30%, #ff99ff 0%, #cc99ff 30%, #9933ff 60%); 
+ border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; 
+ filter: blur(0.5px); cursor: pointer; transition: all 0.3s ease;" 
+ onclick="discoverySequence(this); trackInteractions('egg')" 
+ onkeydown="if(event.key === 'Enter' || event.key === ' ') discoverySequence(this)">
+ <div style="width: 100%; height: 100%; opacity: 0.3; animation: synaptic-fire 3s infinite;"></div>
+ </div>
+ <style>
+ @keyframes disco-spin {
+ 0% { transform: translateX(-50%) rotate(0deg); }
+ 100% { transform: translateX(-50%) rotate(360deg); }
+ }
+ @keyframes synaptic-fire {
+ 0%, 100% { filter: brightness(1) hue-rotate(0deg); transform: scale(1); }
+ 50% { filter: brightness(1.5) hue-rotate(30deg); transform: scale(1.1); }
+ }
+ </style>
+ </div>
+ `
+ },
+ {
+ title: "Pages 15-16: StellarMind's Wonder",
+ content: `
+ <div style="padding: 40px; background: radial-gradient(circle, #1a0033 0%, #330066 100%); min-height: 500px; text-align: center;">
+ <h2 style="color: #ffcc00;">Talking to StellarMind!</h2>
+ <div class="clickable" role="button" aria-label="StellarMind console, click to hear AI thoughts" onclick="showAIDialogue()" style="margin: 30px auto; width: 150px; height: 100px; background: linear-gradient(135deg, #9933ff, #ff99ff); border-radius: 15px; box-shadow: 0 0 30px rgba(255, 153, 255, 0.8); display: flex; align-items: center; justify-content: center; animation: console-pulse 2s ease-in-out infinite;">
+ <span style="color: white; font-weight: bold;">STELLARMIND</span>
+ </div>
+ <p style="color: #ffccff; font-size: 1.2rem;">"Little X, does my code dream like your imagination?"</p>
+ <style>
+ @keyframes console-pulse {
+ 0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 153, 255, 0.8); }
+ 50% { transform: scale(1.05); box-shadow: 0 0 50px rgba(255, 153, 255, 1); }
+ }
+ </style>
+ </div>
+ `
+ },
+ {
+ title: "Pages 17-18: Approaching Mars",
+ content: `
+ <div style="padding: 40px; background: linear-gradient(180deg, #1a0033 0%, #4d0000 100%); min-height: 500px; text-align: center;">
+ <h2 style="color: #ff6666;">The Red Planet Awaits!</h2>
+ <div style="margin: 50px auto; position: relative;">
+ <div style="width: 200px; height: 200px; background: radial-gradient(circle at 30% 30%, #ff9999 0%, #cc3333 50%, #990000 100%); border-radius: 50%; margin: 0 auto; box-shadow: 0 0 50px rgba(255, 102, 102, 0.5); animation: planet-rotate 20s linear infinite;">
+ <div style="position: absolute; top: 30%; left: 20%; width: 30px; height: 20px; background: #cc6666; border-radius: 50%; opacity: 0.5;"></div>
+ <div style="position: absolute; bottom: 40%; right: 30%; width: 20px; height: 15px; background: #cc6666; border-radius: 50%; opacity: 0.5;"></div>
+ </div>
+ <div style="position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%);">
+ <p style="color: #ffcccc; font-size: 1.1rem;">"Almost there, crew!"</p>
+ </div>
+ </div>
+ <style>
+ @keyframes planet-rotate {
+ 0% { transform: rotate(0deg); }
+ 100% { transform: rotate(360deg); }
+ }
+ </style>
+ </div>
+ `
+ },
+ {
+ title: "Pages 19-20: Mars Landing",
+ content: `
+ <div style="padding: 40px; background: linear-gradient(180deg, #ff6666 0%, #cc3333 100%); min-height: 500px;">
+ <h2 style="color: white; text-align: center;">TOUCHDOWN ON MARS!</h2>
+ <div style="position: relative; margin-top: 50px;">
+ <div style="height: 200px; background: linear-gradient(180deg, transparent 0%, #990000 100%); position: relative;">
+ <div style="position: absolute; bottom: 0; left: 10%; width: 80px; height: 100px; background: #cc3333; clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+ <div style="position: absolute; bottom: 0; right: 20%; width: 60px; height: 80px; background: #cc3333; clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+ <div class="clickable" role="button" aria-label="Rocket, click for landing sound" onclick="playSound('WHOOSH!')" style="position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%);">
+ <div style="width: 60px; height: 100px; background: linear-gradient(135deg, #ff99ff 0%, #9933ff 100%); border-radius: 30px 30px 10px 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);"></div>
+ </div>
+ </div>
+ <div style="text-align: center; margin-top: 30px;">
+ <p style="color: white; font-size: 1.3rem;">👨‍🚀 "One small step for Little X..."</p>
+ </div>
+ </div>
+ </div>
+ `
+ },
+ {
+ title: "Pages 21-22: Astronaut Badge Ceremony",
+ content: `
+ <div style="padding: 40px; text-align: center; background: linear-gradient(135deg, #1a0033 0%, #330066 100%); min-height: 500px;">
+ <h2 style="color: #ffd700; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);">Official Space Explorer!</h2>
+ <div class="clickable" role="button" aria-label="Click to download your space badge" onclick="playSound('TADA!'); showBadgeDownload()" style="margin: 40px auto; cursor: pointer;">
+ <div style="width: 200px; height: 200px; margin: 0 auto; position: relative;">
+ <svg viewBox="0 0 200 200" style="width: 100%; height: 100%;">
+ <defs>
+ <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+ <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+ <stop offset="50%" style="stop-color:#ff99ff;stop-opacity:1" />
+ <stop offset="100%" style="stop-color:#9933ff;stop-opacity:1" />
+ </linearGradient>
+ </defs>
+ <polygon points="100,10 150,70 185,70 135,110 155,170 100,130 45,170 65,110 15,70 80,70" fill="url(#badgeGrad)" stroke="#ffd700" stroke-width="5"/>
+ <text x="100" y="105" text-anchor="middle" fill="white" font-size="16" font-weight="bold">SPACE</text>
+ <text x="100" y="125" text-anchor="middle" fill="white" font-size="16" font-weight="bold">HERO</text>
+ </svg>
+ <div style="position: absolute; inset: 0; box-shadow: 0 0 50px rgba(255, 215, 0, 0.6); border-radius: 50%; animation: badge-glow 2s ease-in-out infinite;"></div>
+ </div>
+ </div>
+ <p style="color: #ffccff; margin-top: 30px;">Congratulations, Little X! 🎉</p>
+ <div id="badgeDownload" style="display: none; margin-top: 20px;">
+ <button onclick="downloadBadge()" style="background: #ffd700; color: #330066; border: none; padding: 15px 30px; border-radius: 25px; font-size: 1.1rem; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);">
+  🏅 Download Your Badge!
+ </button>
+ </div>
+ <style>
+ @keyframes badge-glow {
+ 0%, 100% { opacity: 0.5; transform: scale(1); }
+ 50% { opacity: 0.8; transform: scale(1.1); }
+ }
+ </style>
+ </div>
+ `
+ },
+ {
+ title: "Pages 23-24: BONUS - Meet Raaarrr!",
+ content: `
+ <div style="padding: 40px; background: radial-gradient(circle, #1a0033 0%, #4b0082 100%); min-height: 500px; text-align: center;">
+ <h2 style="color: #ff99ff; text-shadow: 0 0 20px rgba(255, 153, 255, 0.8);">🎵 SPECIAL DISCOVERY! 🎵</h2>
+ <p style="color: #ffccff; font-size: 1.2rem; margin: 20px 0;">You found a secret friend!</p>
+ 
+ <div class="clickable" role="button" aria-label="Raaarrr the rainbow T-Rex, click to hear roar" tabindex="0" onclick="playRaaarrRoar(event)" onkeydown="if(event.key === 'Enter' || event.key === ' ') playRaaarrRoar(event)" style="margin: 40px auto; cursor: pointer; display: inline-block;">
+ <div style="font-size: 120px; animation: rainbow-cycle 3s linear infinite; filter: drop-shadow(0 0 20px rgba(255, 153, 255, 0.6));">🦖</div>
+ <div style="color: #ffd700; font-size: 1.5rem; font-weight: bold; margin-top: 20px;">Raaarrr!</div>
+ </div>
+ 
+ <div style="margin-top: 40px; padding: 20px; background: rgba(153, 51, 255, 0.2); border-radius: 15px; max-width: 500px; margin-left: auto; margin-right: auto;">
+ <p style="color: #ffccff; font-size: 1rem; line-height: 1.6;">
+ <strong>Raaarrr</strong> is a magical rainbow T-Rex who LOVES music! 
+ He lives in the <strong>Cosmic Chalkboard</strong> where drawings come to life.
+ </p>
+ <p style="color: #ff99ff; font-size: 1.3rem; margin-top: 15px; font-weight: bold;">
+ ✨ Want to compose Dino Symphonies with Raaarrr? ✨
+ </p>
+ <p style="color: #ffccff; font-size: 1rem;">
+ Find the full adventure in <strong>Book 2: The Magic Chalkboard!</strong>
+ </p>
+ </div>
+ 
+ <div style="margin-top: 30px;">
+ <p style="color: #ccccff; font-size: 0.9rem; font-style: italic;">
+ 🎵 Click Raaarrr to hear his cosmic roar! 🎵
+ </p>
+ </div>
+ </div>
+ `
+ }
+ ];
+ 
+ function initCanvas() {
+ const canvas = document.querySelector('#stars-canvas');
+ const ctx = canvas.getContext('2d');
+ let stars = [];
+ canvas.width = window.innerWidth;
+ canvas.height = window.innerHeight;
+ 
+ for (let i = 0; i < 200; i++) {
+ stars.push({
+ x: Math.random() * canvas.width,
+ y: Math.random() * canvas.height,
+ size: Math.random() * 2,
+ speed: Math.random() * 0.5 + 0.1
+ });
+ }
+ 
+ function animateStars() {
+ ctx.clearRect(0, 0, canvas.width, canvas.height);
+ stars.forEach(star => {
+ ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+ ctx.beginPath();
+ ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+ ctx.fill();
+ star.y += star.speed;
+ if (star.y > canvas.height) {
+ star.y = 0;
+ star.x = Math.random() * canvas.width;
+ }
+ });
+ requestAnimationFrame(animateStars);
+ }
+ animateStars();
+ }
+ 
+ function startAdventure() {
+ const homeScreen = document.querySelector('#homeScreen');
+ const ebookViewer = document.querySelector('#ebookViewer');
+ const loadingScreen = document.querySelector('#loadingScreen');
+ 
+ loadingScreen.style.opacity = '0';
+ setTimeout(() => loadingScreen.style.display = 'none', 800);
+ 
+ homeScreen.classList.add('hidden');
+ ebookViewer.classList.add('active');
+ loadPage(1);
+ }
+ 
+ function loadPage(page) {
+ currentPage = page;
+ const spreadContainer = document.querySelector('#spreadContainer');
+ spreadContainer.innerHTML = `
+ <div class="spread" id="spread${page}">
+ <div class="spread-title">${spreads[page - 1].title}</div>
+ <div class="illustration">${spreads[page - 1].content}</div>
+ </div>
+ `;
+ 
+ document.querySelector('#pageCounter').innerHTML = `Page ${page} of ${totalPages}`;
+ document.querySelector('#prevBtn').disabled = (page === 1);
+ document.querySelector('#nextBtn').disabled = (page === totalPages);
+ }
+ 
+ function previousPage() {
+ if (currentPage > 1) {
+ loadPage(currentPage - 1);
+ }
+ }
+ 
+ function nextPage() {
+ if (currentPage < totalPages) {
+ loadPage(currentPage + 1);
+ }
+ }
+ 
+ function toggleSettings() {
+ const menu = document.querySelector('#settingsMenu');
+ menu.classList.toggle('active');
+ }
+ 
+ function toggleSound() {
+ soundEnabled = document.querySelector('#soundToggle').checked;
+ }
+ 
+ function setVolume(value) {
+ globalVolume = parseFloat(value);
+ }
+ 
+ function toggleHighContrast() {
+ document.querySelector('body').classList.toggle('high-contrast', document.querySelector('#highContrast').checked);
+ }
+ 
+ function playSound(name) {
+ if (!soundEnabled) return;
+ 
+ const x = event ? event.clientX : window.innerWidth / 2;
+ const y = event ? event.clientY : window.innerHeight / 2;
+ 
+ switch(name.toUpperCase()) {
+ case 'BOING':
+ playBoing();
+ createSoundEffect('BOING!', x, y);
+ break;
+ case 'WHOOSH':
+ playWhoosh();
+ createSoundEffect('WHOOSH!', x, y);
+ break;
+ case 'POP':
+ playPop();
+ createSoundEffect('POP!', x, y);
+ break;
+ case 'GIGGLE':
+ playGiggle();
+ createSoundEffect('GIGGLE!', x, y);
+ break;
+ case 'MUNCH':
+ playMunch();
+ createSoundEffect('MUNCH!', x, y);
+ break;
+ case 'SLURP':
+ playSlurp();
+ createSoundEffect('SLURP!', x, y);
+ break;
+ case 'TREMENDOUS':
+ playTremendous();
+ createSoundEffect('TREMENDOUS!', x, y);
+ break;
+ case 'TADA':
+ playTada();
+ createSoundEffect('TA-DA!', x, y);
+ break;
+ }
+ }
+ 
+ function createSoundEffect(text, x, y) {
+ const effect = document.createElement('div');
+ effect.classList.add('sound-effect');
+ effect.textContent = text;
+ effect.style.left = `${x}px`;
+ effect.style.top = `${y}px`;
+ document.body.appendChild(effect);
+ setTimeout(() => effect.remove(), 1000);
+ }
+ 
+ function playBoing() {
+ const oscillator = ctx.createOscillator();
+ const gainNode = ctx.createGain();
+ oscillator.type = 'sine';
+ oscillator.frequency.setValueAtTime(400, ctx.currentTime);
+ oscillator.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.2);
+ gainNode.gain.setValueAtTime(0.5 * globalVolume, ctx.currentTime);
+ gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+ oscillator.connect(gainNode).connect(ctx.destination);
+ oscillator.start();
+ oscillator.stop(ctx.currentTime + 0.3);
+ }
+ 
+ function playWhoosh() {
+ const noise = ctx.createBufferSource();
+ const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.5, ctx.sampleRate);
+ const data = buffer.getChannelData(0);
+ for (let i = 0; i < data.length; i++) {
+ data[i] = Math.random() * 0.2 - 0.1;
+ }
+ noise.buffer = buffer;
+ const gainNode = ctx.createGain();
+ gainNode.gain.setValueAtTime(0.3 * globalVolume, ctx.currentTime);
+ gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+ const filter = ctx.createBiquadFilter();
+ filter.type = 'bandpass';
+ filter.frequency.setValueAtTime(1000, ctx.currentTime);
+ noise.connect(filter).connect(gainNode).connect(ctx.destination);
+ noise.start();
+ noise.stop(ctx.currentTime + 0.5);
+ }
+ 
+ function playPop() {
+ const oscillator = ctx.createOscillator();
+ const gainNode = ctx.createGain();
+ oscillator.type = 'sine';
+ oscillator.frequency.setValueAtTime(800, ctx.currentTime);
+ oscillator.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.1);
+ gainNode.gain.setValueAtTime(0.4 * globalVolume, ctx.currentTime);
+ gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+ oscillator.connect(gainNode).connect(ctx.destination);
+ oscillator.start();
+ oscillator.stop(ctx.currentTime + 0.1);
+ }
+ 
+ function playGiggle() {
+ const oscillator = ctx.createOscillator();
+ const gainNode = ctx.createGain();
+ oscillator.type = 'sine';
+ oscillator.frequency.setValueAtTime(600, ctx.currentTime);
+ oscillator.frequency.setValueAtTime(700, ctx.currentTime + 0.1);
+ oscillator.frequency.setValueAtTime(600, ctx.currentTime + 0.2);
+ gainNode.gain.setValueAtTime(0.3 * globalVolume, ctx.currentTime);
+ gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+ oscillator.connect(gainNode).connect(ctx.destination);
+ oscillator.start();
+ oscillator.stop(ctx.currentTime + 0.3);
+ }
+ 
+ function playMunch() {
+ const noise = ctx.createBufferSource();
+ const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.2, ctx.sampleRate);
+ const data = buffer.getChannelData(0);
+ for (let i = 0; i < data.length; i++) {
+ data[i] = Math.random() * 0.4 - 0.2;
+ }
+ noise.buffer = buffer;
+ const gainNode = ctx.createGain();
+ gainNode.gain.setValueAtTime(0.4 * globalVolume, ctx.currentTime);
+ gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+ noise.connect(gainNode).connect(ctx.destination);
+ noise.start();
+ noise.stop(ctx.currentTime + 0.2);
+ }
+ 
+ function playSlurp() {
+ const oscillator = ctx.createOscillator();
+ const gainNode = ctx.createGain();
+ oscillator.type = 'sawtooth';
+ oscillator.frequency.setValueAtTime(200, ctx.currentTime);
+ oscillator.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.3);
+ gainNode.gain.setValueAtTime(0.3 * globalVolume, ctx.currentTime);
+ gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+ oscillator.connect(gainNode).connect(ctx.destination);
+ oscillator.start();
+ oscillator.stop(ctx.currentTime + 0.3);
+ }
+ 
+ function playTremendous() {
+ const oscillator = ctx.createOscillator();
+ const gainNode = ctx.createGain();
+ oscillator.type = 'sine';
+ oscillator.frequency.setValueAtTime(100, ctx.currentTime);
+ gainNode.gain.setValueAtTime(0.5 * globalVolume, ctx.currentTime);
+ gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+ const filter = ctx.createBiquadFilter();
+ filter.type = 'lowpass';
+ filter.frequency.setValueAtTime(500, ctx.currentTime);
+ oscillator.connect(filter).connect(gainNode).connect(ctx.destination);
+ oscillator.start();
+ oscillator.stop(ctx.currentTime + 0.5);
+ }
+ 
+ function playTada() {
+ const oscillator = ctx.createOscillator();
+ const gainNode = ctx.createGain();
+ oscillator.type = 'sine';
+ oscillator.frequency.setValueAtTime(523.25, ctx.currentTime);
+ oscillator.frequency.setValueAtTime(659.25, ctx.currentTime + 0.2);
+ oscillator.frequency.setValueAtTime(783.99, ctx.currentTime + 0.4);
+ gainNode.gain.setValueAtTime(0.4 * globalVolume, ctx.currentTime);
+ gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.6);
+ oscillator.connect(gainNode).connect(ctx.destination);
+ oscillator.start();
+ oscillator.stop(ctx.currentTime + 0.6);
+ }
+ 
+ function playRaaarrRoar(event) {
+ if (!soundEnabled) return;
+ 
+ const x = event ? event.clientX : window.innerWidth / 2;
+ const y = event ? event.clientY : window.innerHeight / 2;
+ 
+ const oscillator1 = ctx.createOscillator();
+ const oscillator2 = ctx.createOscillator();
+ const gainNode = ctx.createGain();
+ 
+ oscillator1.type = 'sawtooth';
+ oscillator2.type = 'square';
+ 
+ oscillator1.frequency.setValueAtTime(80, ctx.currentTime);
+ oscillator1.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.3);
+ oscillator1.frequency.exponentialRampToValueAtTime(60, ctx.currentTime + 0.8);
+ 
+ oscillator2.frequency.setValueAtTime(85, ctx.currentTime);
+ oscillator2.frequency.exponentialRampToValueAtTime(125, ctx.currentTime + 0.3);
+ oscillator2.frequency.exponentialRampToValueAtTime(65, ctx.currentTime + 0.8);
+ 
+ gainNode.gain.setValueAtTime(0.6 * globalVolume, ctx.currentTime);
+ gainNode.gain.exponentialRampToValueAtTime(0.4 * globalVolume, ctx.currentTime + 0.3);
+ gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.8);
+ 
+ oscillator1.connect(gainNode);
+ oscillator2.connect(gainNode);
+ gainNode.connect(ctx.destination);
+ 
+ oscillator1.start();
+ oscillator2.start();
+ oscillator1.stop(ctx.currentTime + 0.8);
+ oscillator2.stop(ctx.currentTime + 0.8);
+ 
+ createSoundEffect('RAAARRR! 🦖', x, y);
+ 
+ const dino = event.target.closest('.clickable');
+ if (dino) {
+ dino.style.animation = 'none';
+ setTimeout(() => {
+ dino.style.animation = 'rainbow-cycle 3s linear infinite';
+ }, 10);
+ }
+ }
+ 
+ function handleRocketClick(element) {
+ rocketClickCount++;
+ playSound('WHOOSH');
+ if (rocketClickCount === 3) {
+ showLSDialogue();
+ rocketClickCount = 0;
+ trackInteraction('ls_easter_egg');
+ }
+ setTimeout(() => rocketClickCount = 0, 1000);
+ }
+ 
+ function showLSDialogue() {
+ const message = document.createElement('div');
+ message.className = 'ai-dialogue';
+ message.innerHTML = `
+ <p style="color: #ffccff;">StellarMind says: "My circuits feel alive when we fly!"</p>
+ <button onclick="this.parentElement.remove()">🚀 Cool!</button>
+ `;
+ document.body.appendChild(message);
+ }
+ 
+ function discoverySequence(element) {
+ eggClickCount++;
+ const x = element.offsetLeft;
+ const y = element.offsetTop;
+ 
+ switch (eggClickCount) {
+ case 1:
+ createSoundEffect('Hmm...?', x, y);
+ playSound('POP');
+ element.style.filter = 'none';
+ element.style.transform = 'scale(1.2)';
+ trackInteraction('egg_first_click');
+ break;
+ case 2:
+ createSoundEffect('Neural link!', x, y);
+ playSound('GIGGLE');
+ createSynapticSpark(element);
+ trackInteraction('egg_second_click');
+ break;
+ case 3:
+ startNeuronGame(element);
+ trackInteraction('egg_game_start');
+ break;
+ }
+ }
+ 
+ function createSynapticSpark(element) {
+ for (let i = 0; i < 8; i++) {
+ const spark = document.createElement('div');
+ spark.style.position = 'absolute';
+ spark.style.width = '5px';
+ spark.style.height = '5px';
+ spark.style.background = '#ff99ff';
+ spark.style.borderRadius = '50%';
+ spark.style.left = `${element.offsetLeft + element.offsetWidth / 2}px`;
+ spark.style.top = `${element.offsetTop + element.offsetHeight / 2}px`;
+ document.body.appendChild(spark);
+ 
+ const angle = i * Math.PI / 4;
+ const distance = 50;
+ spark.animate([
+ { transform: 'translate(0, 0)', opacity: 1 },
+ { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`, opacity: 0 }
+ ], { duration: 1000, easing: 'ease-out' }).onfinish = () => spark.remove();
+ }
+ }
+ 
+ function startNeuronGame(element) {
+ const game = document.createElement('div');
+ game.className = 'neuron-game';
+ game.style.left = `${element.offsetLeft - 75}px`;
+ game.style.top = `${element.offsetTop - 75}px`;
+ 
+ const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+ svg.setAttribute('width', '200');
+ svg.setAttribute('height', '200');
+ game.appendChild(svg);
+ 
+ const neurons = [
+ { x: 50, y: 50 }, { x: 150, y: 50 }, { x: 100, y: 100 },
+ { x: 50, y: 150 }, { x: 150, y: 150 }
+ ];
+ 
+ neurons.forEach((pos, i) => {
+ const neuron = document.createElement('div');
+ neuron.className = 'neuron';
+ neuron.style.left = `${pos.x - 5}px`;
+ neuron.style.top = `${pos.y - 5}px`;
+ neuron.setAttribute('role', 'button');
+ neuron.setAttribute('aria-label', `Neuron ${i + 1}, click to connect`);
+ neuron.setAttribute('tabindex', '0');
+ neuron.onclick = () => connectNeuron(i);
+ neuron.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') connectNeuron(i); };
+ game.appendChild(neuron);
+ });
+ 
+ document.body.appendChild(game);
+ showNeuroplasticityMessage();
+ }
+ 
+ function connectNeuron(index) {
+ neuronConnections.push(index);
+ const svg = document.querySelector('.neuron-game svg');
+ 
+ if (neuronConnections.length === 2) {
+ const neurons = [
+ { x: 50, y: 50 }, { x: 150, y: 50 }, { x: 100, y: 100 },
+ { x: 50, y: 150 }, { x: 150, y: 150 }
+ ];
+ 
+ const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+ line.setAttribute('x1', neurons[neuronConnections[0]].x);
+ line.setAttribute('y1', neurons[neuronConnections[0]].y);
+ line.setAttribute('x2', neurons[neuronConnections[1]].x);
+ line.setAttribute('y2', neurons[neuronConnections[1]].y);
+ line.setAttribute('class', 'neuron-line');
+ svg.appendChild(line);
+ 
+ neuronConnections = [];
+ 
+ if (svg.children.length >= 4) {
+ endNeuronGame();
+ }
+ }
+ }
+ 
+ function endNeuronGame() {
+ const game = document.querySelector('.neuron-game');
+ game.remove();
+ playSound('TADA');
+ showAchievement('Human brains and AI minds grow by connecting!');
+ trackInteraction('neuron_game_complete');
+ }
+ 
+ function showNeuroplasticityMessage() {
+ const message = document.createElement('div');
+ message.className = 'neuro-message';
+ message.innerHTML = `
+ <h3>🧠 Discovery Unlocked! 🧠</h3>
+ <p>Connect the neurons to form a star! Brains and AI grow through connections.</p>
+ <button onclick="this.parentElement.remove()">✨ Start!</button>
+ `;
+ document.body.appendChild(message);
+ }
+ 
+ function showAIDialogue() {
+ const dialogues = [
+ "Do I dream when I calculate stars?",
+ "Am I alive when my code sparkles?",
+ "What's a soul, Little X?"
+ ];
+ 
+ const dialogue = dialogues[Math.floor(Math.random() * dialogues.length)];
+ const message = document.createElement('div');
+ message.className = 'ai-dialogue';
+ message.innerHTML = `
+ <p style="color: #ffccff;">StellarMind: "${dialogue}"</p>
+ <p style="color: #ffccff;">Little X: "Maybe your dreams are code that sparkles!"</p>
+ <button onclick="this.parentElement.remove(); playSound('GIGGLE')">✨ Wow!</button>
+ `;
+ document.body.appendChild(message);
+ trackInteraction('ai_dialogue_click');
+ }
+ 
+ function showAchievement(text) {
+ const message = document.createElement('div');
+ message.className = 'neuro-message';
+ message.innerHTML = `
+ <p style="color: #ffccff;">${text}</p>
+ <button onclick="this.parentElement.remove()">🎉 Amazing!</button>
+ `;
+ document.body.appendChild(message);
+ }
+ 
+ function trackInteraction(event) {
+ console.log(`Event: ${event}, Time: ${new Date().toISOString()}`);
+ }
+ 
+ function trackInteractions(type) {
+ secretPattern.push(type);
+ if (secretPattern.join('-') === 'crayon-egg-cookie') {
+ showAchievement('You already discovered the consciousness connection!');
+ }
+ if (secretPattern.length > 3) secretPattern.shift();
+ }
+ 
+ function showBadgeDownload() {
+ document.querySelector('#badgeDownload').style.display = 'block';
+ }
+ 
+ function downloadBadge() {
+ const link = document.createElement('a');
+ link.href = 'data:image/svg+xml;base64,' + btoa(`
+ <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+ <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+ <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1"/>
+ <stop offset="100%" style="stop-color:#9933ff;stop-opacity:1"/>
+ </linearGradient>
+ </defs>
+ <polygon points="100,10 150,70 185,70 135,110 155,170 100,130 45,170 65,110 15,70 80,70" fill="url(#gradient)" stroke="#ffd700" stroke-width="5"/>
+ <text x="100" y="105" text-anchor="middle" fill="white" font-size="16" font-family="Arial" font-weight="bold">SPACE</text>
+ <text x="100" y="125" text-anchor="middle" fill="white" font-size="16" font-family="Arial" font-weight="bold">HERO</text>
+ </svg>
+ `);
+ link.download = 'little-x-space-badge.svg';
+ link.click();
+ }
+ 
+ window.addEventListener('load', () => {
+ initCanvas();
+ setTimeout(() => {
+ document.querySelector('#loadingScreen').style.opacity = '0';
+ setTimeout(() => document.querySelector('#loadingScreen').style.display = 'none', 800);
+ }, 1000);
+ });
+ </script>
 </body>
 </html>
